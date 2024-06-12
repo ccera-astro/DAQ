@@ -1,5 +1,5 @@
 # run Pulsar flowgraph 
-from Pulsar import Pulsar 
+from DAQ import DAQ
 import time 
 import json
 import sys 
@@ -62,7 +62,7 @@ file_base_name = dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
 
 print("Entering runPython: file_base_name={0:s}".format(file_base_name))
 
-tb = Pulsar(base_name=file_base_name, seconds=args.run_time)
+tb = DAQ(base_name=file_base_name, seconds=args.run_time, f1=1.4204e9, f2=1.4204e9, fft_size=32, decimation_factor=250, samp_rate=2.5e7)
 
 if printOn : print("Top block instantiated.")
 
