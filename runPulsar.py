@@ -9,7 +9,7 @@ def getArgs() :
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--f_center",type=float,default=1413.5e6,help="Center frequency")
-    parser.add_argument("--srate",type=float,default=2.5e7,help="USRP sample rate.")
+    parser.add_argument("--samp_rate",type=float,default=2.5e7,help="USRP sample rate.")
     parser.add_argument("--fft_size",type=int,default=32,help="FFT size")
     parser.add_argument("--n_decimate",type=int,default=250,help="Decimation factor")
     parser.add_argument("--run_type",default='Track',help="Track or Transit")
@@ -60,9 +60,10 @@ printOn = args.printOn
 dir = args.dir 
 file_base_name = dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
 
-print("Entering runPython: file_base_name={0:s}".format(file_base_name))
+print("Entering runPulsar: file_base_name={0:s}".format(file_base_name))
 
-tb = DAQ(base_name=file_base_name, seconds=args.run_time, f1=1.4204e9, f2=1.4204e9, fft_size=32, decimation_factor=250, samp_rate=2.5e7)
+tb = DAQ(base_name=file_base_name, seconds=args.run_time, f1=1.4204e9, f2=1.4204e9, 
+         fft_size=args.fft_size, decimation_factor=args.decimation_factor, samp_rate=args.samp_rate)
 
 if printOn : print("Top block instantiated.")
 
