@@ -45,18 +45,6 @@ blocks:
     coordinate: [1008, 596.0]
     rotation: 0
     state: true
-- name: fft_size
-  id: variable
-  parameters:
-    comment: ''
-    value: '2048'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [712, 596.0]
-    rotation: 0
-    state: true
 - name: base_name
   id: parameter
   parameters:
@@ -333,6 +321,23 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [576, 500.0]
+    rotation: 0
+    state: true
+- name: fft_size
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: fft_size
+    short_id: ''
+    type: intx
+    value: '2048'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 596.0]
     rotation: 0
     state: true
 - name: fft_vxx_0

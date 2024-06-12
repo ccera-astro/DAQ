@@ -29,7 +29,7 @@ import math
 
 class DAQ(gr.top_block):
 
-    def __init__(self, base_name='Doppler', decimation_factor=10000, f1=1.418e9, f2=1418e6, f3=1418e6, f4=1418e6, g1=75, g2=75, g3=75, g4=75, samp_rate=1.0e7, seconds=3600):
+    def __init__(self, base_name='Doppler', decimation_factor=10000, f1=1.418e9, f2=1418e6, f3=1418e6, f4=1418e6, fft_size=2048, g1=75, g2=75, g3=75, g4=75, samp_rate=1.0e7, seconds=3600):
         gr.top_block.__init__(self, "DAQ", catch_exceptions=True)
 
         ##################################################
@@ -41,6 +41,7 @@ class DAQ(gr.top_block):
         self.f2 = f2
         self.f3 = f3
         self.f4 = f4
+        self.fft_size = fft_size
         self.g1 = g1
         self.g2 = g2
         self.g3 = g3
@@ -51,7 +52,6 @@ class DAQ(gr.top_block):
         ##################################################
         # Variables
         ##################################################
-        self.fft_size = fft_size = 2048
         self.alpha_IIR = alpha_IIR = 2./decimation_factor
 
         ##################################################
@@ -175,6 +175,12 @@ class DAQ(gr.top_block):
         self.f4 = f4
         self.uhd_usrp_source_0.set_center_freq(self.f4, 3)
 
+    def get_fft_size(self):
+        return self.fft_size
+
+    def set_fft_size(self, fft_size):
+        self.fft_size = fft_size
+
     def get_g1(self):
         return self.g1
 
@@ -218,12 +224,6 @@ class DAQ(gr.top_block):
         self.seconds = seconds
         self.blocks_head_0.set_length((int(self.seconds*self.samp_rate)))
 
-    def get_fft_size(self):
-        return self.fft_size
-
-    def set_fft_size(self, fft_size):
-        self.fft_size = fft_size
-
     def get_alpha_IIR(self):
         return self.alpha_IIR
 
@@ -255,6 +255,9 @@ def argument_parser():
         "--f4", dest="f4", type=eng_float, default=eng_notation.num_to_str(float(1418e6)),
         help="Set Chan 4 freq [default=%(default)r]")
     parser.add_argument(
+        "--fft-size", dest="fft_size", type=intx, default=2048,
+        help="Set fft_size [default=%(default)r]")
+    parser.add_argument(
         "--g1", dest="g1", type=eng_float, default=eng_notation.num_to_str(float(75)),
         help="Set Chan 1 gain [default=%(default)r]")
     parser.add_argument(
@@ -278,7 +281,7 @@ def argument_parser():
 def main(top_block_cls=DAQ, options=None):
     if options is None:
         options = argument_parser().parse_args()
-    tb = top_block_cls(base_name=options.base_name, decimation_factor=options.decimation_factor, f1=options.f1, f2=options.f2, f3=options.f3, f4=options.f4, g1=options.g1, g2=options.g2, g3=options.g3, g4=options.g4, samp_rate=options.samp_rate, seconds=options.seconds)
+    tb = top_block_cls(base_name=options.base_name, decimation_factor=options.decimation_factor, f1=options.f1, f2=options.f2, f3=options.f3, f4=options.f4, fft_size=options.fft_size, g1=options.g1, g2=options.g2, g3=options.g3, g4=options.g4, samp_rate=options.samp_rate, seconds=options.seconds)
 
     def sig_handler(sig=None, frame=None):
         tb.stop()
