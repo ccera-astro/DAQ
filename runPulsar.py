@@ -11,7 +11,7 @@ def getArgs() :
     parser.add_argument("--f_center",type=float,default=1413.5e6,help="Center frequency")
     parser.add_argument("--samp_rate",type=float,default=2.5e7,help="USRP sample rate.")
     parser.add_argument("--fft_size",type=int,default=32,help="FFT size")
-    parser.add_argument("--n_decimate",type=int,default=250,help="Decimation factor")
+    parser.add_argument("--decimation_factor",type=int,default=250,help="Decimation factor")
     parser.add_argument("--run_type",default='Track',help="Track or Transit")
     parser.add_argument("--dir",default="/home/dmarlow/data/",help="Data directory")
     parser.add_argument("--run_time",type=int,default=600,help="Run time in seconds.")
