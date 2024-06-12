@@ -22,8 +22,6 @@ from gnuradio import eng_notation
 from gnuradio import uhd
 import time
 import Pulsar_rx_time_catcher as rx_time_catcher  # embedded python block
-import Pulsar_time_catcher as time_catcher  # embedded python block
-import Pulsar_time_catcher_0 as time_catcher_0  # embedded python block
 import math
 
 
@@ -92,8 +90,6 @@ class Pulsar(gr.top_block):
 
         self.uhd_usrp_source_0.set_lo_source('companion', uhd.ALL_LOS, 1)
         self.uhd_usrp_source_0.set_lo_export_enabled(False, uhd.ALL_LOS, 1)
-        self.time_catcher_0 = time_catcher_0.blk(fftsize=fft_size, tsfile=base_name + "_1_ts.txt")
-        self.time_catcher = time_catcher.blk(fftsize=fft_size, tsfile=base_name + "_2_ts.txt")
         self.single_pole_iir_filter_xx_0_0 = filter.single_pole_iir_filter_ff(alpha_IIR, fft_size)
         self.single_pole_iir_filter_xx_0 = filter.single_pole_iir_filter_ff(alpha_IIR, fft_size)
         self.rx_time_catcher = rx_time_catcher.blk(rxfile=base_name + "_ts.txt", fftsize=32, crate=samp_rate/fft_size/decimation_factor, srate=samp_rate)
@@ -120,9 +116,7 @@ class Pulsar(gr.top_block):
         self.connect((self.blocks_complex_to_mag_squared_0_0, 0), (self.single_pole_iir_filter_xx_0_0, 0))
         self.connect((self.blocks_head_0, 0), (self.blocks_stream_to_vector_0, 0))
         self.connect((self.blocks_keep_one_in_n_0, 0), (self.blocks_file_sink_0, 0))
-        self.connect((self.blocks_keep_one_in_n_0, 0), (self.time_catcher_0, 0))
         self.connect((self.blocks_keep_one_in_n_0_0, 0), (self.blocks_file_sink_1, 0))
-        self.connect((self.blocks_keep_one_in_n_0_0, 0), (self.time_catcher, 0))
         self.connect((self.blocks_keep_one_in_n_2, 0), (self.rx_time_catcher, 0))
         self.connect((self.blocks_stream_to_vector_0, 0), (self.fft_vxx_0, 0))
         self.connect((self.blocks_stream_to_vector_0_0, 0), (self.fft_vxx_0_0, 0))
@@ -143,8 +137,6 @@ class Pulsar(gr.top_block):
         self.blocks_file_sink_0.open(self.base_name+"_1.raw")
         self.blocks_file_sink_1.open(self.base_name +"_2.raw")
         self.rx_time_catcher.rxfile = self.base_name + "_ts.txt"
-        self.time_catcher.tsfile = self.base_name + "_2_ts.txt"
-        self.time_catcher_0.tsfile = self.base_name + "_1_ts.txt"
 
     def get_decimation_factor(self):
         return self.decimation_factor
@@ -231,8 +223,6 @@ class Pulsar(gr.top_block):
 
     def set_fft_size(self, fft_size):
         self.fft_size = fft_size
-        self.time_catcher.fftsize = self.fft_size
-        self.time_catcher_0.fftsize = self.fft_size
 
     def get_alpha_IIR(self):
         return self.alpha_IIR
