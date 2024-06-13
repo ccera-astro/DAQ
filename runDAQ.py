@@ -115,7 +115,7 @@ else :
     exit()
 
 # non-negative user parameters can override default parameters for the specified mode
-if args.fCenter > 0. : f1, f2 = args.fCenter, args.fCenter 
+if args.f_center > 0. : f1, f2 = args.f_center, args.f_center 
 if args.fft_size > 0 : fft_size = args.fft_size 
 if args.decimation_factor > 0 : decimation_factor = args.decimation_factor
 if args.samp_rate > 0. : samp_rate = args.samp_rate  
