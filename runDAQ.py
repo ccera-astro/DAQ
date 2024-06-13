@@ -10,7 +10,7 @@ import ephem
 def getArgs() :
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m","--mode",default="none",help="Run mode: pulsar, doppler, scan, or generic")
+    parser.add_argument("-r","--run_mode",default="none",help="Run mode: pulsar, doppler, scan, or generic")
     parser.add_argument("--f_center",type=float,default=-1.,help="Center frequency")
     parser.add_argument("--samp_rate",type=float,default=-1.,help="USRP sample rate.")
     parser.add_argument("--fft_size",type=int,default=-1,help="FFT size")
@@ -93,7 +93,7 @@ def signal_handler(sig, frame):
 
 args = getArgs() 
 printOn = args.printOn 
-run_mode = args.mode.lower() 
+run_mode = args.run_mode.lower() 
 
 if run_mode == "pulsar" :
     f1, f2 = 1.4204e9, 1.4204e9
