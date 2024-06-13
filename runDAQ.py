@@ -134,11 +134,7 @@ metadata = buildMetadata(args,tb)
 
 if printOn : print("Metadata built.  metadata={0:s}".format(str(metadata)))
 
-if True :
-    print("********** Test mode.  Stopping before tb.start() **********")
-    exit() 
-
-print("Starting Doppler flowgraph")
+print("Starting {0:s} flowgraph".format(run_mode))
 tb.start()
 
 # let the flowgraph run a short time so allow the time stamp file to be written 
