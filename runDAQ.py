@@ -27,7 +27,8 @@ def getAzAlt() :
     rpc = xml.ServerProxy("http://172.22.121.35:9090")
     values = rpc.query_both_axes()
     alt, az = values[0],values[1]
-    return az, alt
+    az_rate, alt_rate = rpc.get_az_rate(), rpc.get_el_rate() 
+    return az, alt, az_rate, alt_rate
 
 def getObserver(observatory) :
     obs=ephem.Observer()
@@ -66,16 +67,13 @@ def buildMetadata(args,tb) :
     N = tb.get_decimation_factor() 
     dict['t_sample'] = 1./(srate/fft_size/N)
     dict['n_chans'] = 2
-    
     dict['run_mode'] = args.run_mode  
     dict['target'] = args.target 
-    az, alt = getAzAlt()
+    az, alt, az_rate, alt_rate = getAzAlt()
     dict['az'] = az
     dict['alt'] = alt
     dict['run_type'] = 'Transit'
-    time.sleep(5.)
-    az2, alt2 = getAzAlt()
-    if abs(az2-az) > 0.5 or abs(alt2-alt) > 0.5 : dict['run_type'] = 'Track' 
+    if abs(az_rate) > 0.001 or abs(alt_rate) > 0.001 : dict['run_type'] = "Track"
     carp = getObserver("carp")
     dict['RA'], dict['dec'] = H2E(carp,az,alt)
     dict['gLon'], dict['gLat'] = E2G(dict['RA'],dict['dec'])
