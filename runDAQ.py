@@ -66,12 +66,16 @@ def buildMetadata(args,tb) :
     N = tb.get_decimation_factor() 
     dict['t_sample'] = 1./(srate/fft_size/N)
     dict['n_chans'] = 2
-    dict['run_type'] = args.run_type
+    
     dict['run_mode'] = args.run_mode  
     dict['target'] = args.target 
     az, alt = getAzAlt()
     dict['az'] = az
     dict['alt'] = alt
+    dict['run_type'] = 'Transit'
+    time.sleep(5.)
+    az2, alt2 = getAzAlt()
+    if abs(az2-az) > 0.5 or abs(alt2-alt) > 0.5 : dict['run_type'] = 'Track' 
     carp = getObserver("carp")
     dict['RA'], dict['dec'] = H2E(carp,az,alt)
     dict['gLon'], dict['gLat'] = E2G(dict['RA'],dict['dec'])
