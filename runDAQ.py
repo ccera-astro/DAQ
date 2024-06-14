@@ -27,7 +27,7 @@ def getAzAlt() :
     rpc = xml.ServerProxy("http://172.22.121.35:9090")
     values = rpc.query_both_axes()
     alt, az = values[0],values[1]
-    az_rate, alt_rate = rpc.get_az_rate(), rpc.get_el_rate() 
+    az_rate, alt_rate = rpc.query_az_rate(), rpc.query_el_rate() 
     return az, alt, az_rate, alt_rate
 
 def getObserver(observatory) :
