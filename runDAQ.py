@@ -95,6 +95,7 @@ def signal_handler(sig, frame):
     print('Cntl+C pressed . . . stopping flowgraph')
     tb.blocks_head_0.set_length(0)
     time.sleep(1)
+    endRun(metadata,file_base_name)
     sys.exit(0)
 
 # begin execution
@@ -156,6 +157,7 @@ print("\nRunning for {0:d} seconds.  Press Cntl+C to exit.".format(args.run_time
 
 tb.wait()
 print("Flow stopped naturally after running for {0:d} seconds.".format(args.run_time))
+endRun(metadata,file_base_name)
 sys.exit(0)
 
 
