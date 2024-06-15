@@ -90,7 +90,7 @@ def writeMetadata(metadata,file_base_name) :
 def endRun(metadata,file_base_name) :
     metadata["run_time"] = time.time() - metadata["t_start"]
     writeMetadata(metadata,file_base_name)
-    for key, value in metadata.items(): print("{0:<20}:{1:s}".format(str(key),str(value)))
+    for key, value in metadata.items(): print("{0:>20} : {1:s}".format(str(key),str(value)))
     return
 
 def signal_handler(sig, frame):
