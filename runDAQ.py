@@ -65,6 +65,7 @@ def buildMetadata(args,tb) :
     dict['srate'] = srate = tb.get_samp_rate() 
     dict['fft_size'] = fft_size = tb.get_fft_size()
     N = tb.get_decimation_factor() 
+    dict['decimation_factor'] = N 
     dict['t_sample'] = 1./(srate/fft_size/N)
     dict['n_chans'] = 2
     dict['run_mode'] = args.run_mode  
