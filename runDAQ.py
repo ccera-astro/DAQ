@@ -84,6 +84,12 @@ def writeMetadata(metadata,file_base_name) :
     file_name = file_base_name + '.json'
     with open(file_name, 'w') as fp :
         json.dump(metadata, fp)
+    return
+
+def endRun(metadata,file_base_name) :
+    metadata["run_time"] = time.time() - metadata["t_start"]
+    writeMetadata(metadata,file_base_name)
+    return
 
 def signal_handler(sig, frame):
     print('Cntl+C pressed . . . stopping flowgraph')
