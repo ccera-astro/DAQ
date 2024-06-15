@@ -87,15 +87,10 @@ def writeMetadata(metadata,file_base_name) :
         json.dump(metadata, fp)
     return
 
-def printMetadata(d, indent=0):
-    for key, value in d.items():
-        print(' ' * indent + str(key) + ': ' + str(value))
-    return
-
 def endRun(metadata,file_base_name) :
     metadata["run_time"] = time.time() - metadata["t_start"]
     writeMetadata(metadata,file_base_name)
-    printMetadata(metadata)
+    for key, value in metadata.items(): print("{0:<20}:{1:s}".format(str(key),str(value)))
     return
 
 def signal_handler(sig, frame):
