@@ -25,11 +25,15 @@ def getArgs() :
 def getAzAlt() :
     import xmlrpc.client as xml
     rpc = xml.ServerProxy("http://172.22.121.35:9090")
-    values = rpc.query_both_axes()
-    alt, az = values[0],values[1]
-    az_rate, alt_rate = rpc.query_az_rate(), rpc.query_el_rate() 
-    return az, alt, az_rate, alt_rate
-
+    try :
+        values = rpc.query_both_axes()
+        alt, az = values[0],values[1]
+        az_rate, alt_rate = rpc.query_az_rate(), rpc.query_el_rate() 
+        return az, alt, az_rate, alt_rate
+    except OSError :
+        print("In runDAQ.getAzAlt(): OSError rpc server not found.")
+        return 0., 90., 0., 0. 
+    
 def getObserver(observatory) :
     obs=ephem.Observer()
     if observatory.lower() == 'belmar' :
