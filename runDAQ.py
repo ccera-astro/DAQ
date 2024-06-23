@@ -128,7 +128,9 @@ def cur_sidereal(longitude):
 def lmst_wait(lmst) :
     TENSECS = 10.0/3600.0
     carp = getObserver("carp")
-    longitude = carp.lon 
+    longitude = carp.lon
+    x = cur_sidereal(longitude)
+    print("Local sidereal time={0:s}".format(x)) 
     while True:
         x = cur_sidereal(longitude)
         x = x.split(",")
