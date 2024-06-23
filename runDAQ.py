@@ -5,7 +5,7 @@ import json
 import sys 
 import signal
 from math import degrees
-import ephem
+import ephem 
 
 def getArgs() :
     import argparse
@@ -20,6 +20,7 @@ def getArgs() :
     parser.add_argument("--dir",default="/home/dmarlow/data/",help="Data directory")
     parser.add_argument("--run_time",type=int,default=600,help="Run time in seconds.")
     parser.add_argument("--printOn",action="store_true",help="Turn on print statements")
+    parser.add_argument("--lmst",type=float,default=None,help="Wait for this lmst before starting.")
     return parser.parse_args()
 
 def getAzAlt() :
@@ -104,6 +105,42 @@ def signal_handler(sig, frame):
     endRun(metadata,file_base_name)
     sys.exit(0)
 
+def cur_sidereal(longitude):
+    longstr = "%02d" % int(longitude)
+    longstr = longstr + ":"
+    longitude = abs(longitude)
+    frac = longitude - int(longitude)
+    frac *= 60
+    mins = int(frac)
+    longstr += "%02d" % mins
+    longstr += ":00"
+    x = ephem.Observer()
+    x.date = ephem.now()
+    x.long = longstr
+    jdate = ephem.julian_date(x)
+    tokens=str(x.sidereal_time()).split(":")
+    hours=int(tokens[0])
+    minutes=int(tokens[1])
+    seconds=int(float(tokens[2]))
+    sidt = "%02d,%02d,%02d" % (hours, minutes, seconds)
+    return (sidt)
+
+def lmst_wait(lmst) :
+    TENSECS = 10.0/3600.0
+    carp = getObserver("carp")
+    longitude = carp.lon 
+    while True:
+        x = cur_sidereal(longitude)
+        x = x.split(",")
+        lmst = float(x[0])
+        lmst += float(x[1])/60.0
+        lmst += float(x[2])/3600.0
+
+        if (lmst >= args.lmst and lmst <= (args.lmst + TENSECS)):
+            break
+
+        time.sleep(1.0)
+
 # begin execution
 
 args = getArgs() 
@@ -139,6 +176,11 @@ dir = args.dir
 file_base_name = dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
 
 print("Entering runDAQ: Run mode={0:s} file_base_name={1:s}".format(run_mode,file_base_name))
+
+if args.lmst != None : 
+    print("Waiting for lmst={0:.2f}".format(args.lmst))
+    lmst_wait(args.lmst)
+    print("Starting")
 
 tb = DAQ(base_name=file_base_name, seconds=args.run_time, f1=f1, f2=f2, 
          fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
