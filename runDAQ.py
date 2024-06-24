@@ -130,6 +130,7 @@ def lmst_wait(target_lmst) :
     ONEMINUTE = 60.0/3600.0
     carp = getObserver("carp")
     longitude = carp.lon
+    print("Carp longitude={0:f}".format(longitude))
     #longitude = -75.69 
     x = cur_sidereal(longitude)
     print("Local sidereal time={0:s}".format(x)) 
