@@ -138,10 +138,9 @@ def lmst_wait(target_lmst) :
         lmst = float(x[0])
         lmst += float(x[1])/60.0
         lmst += float(x[2])/3600.0
-        print("In runDAQ.lmst_wait() current lmst={0:.2f} target lmst={1:.2f}".format(lmst,target_lmst))
+        print("In runDAQ.lmst_wait() current lmst={0:.3f} target lmst={1:.3f}".format(lmst,target_lmst))
         if (lmst >= target_lmst and lmst <= (target_lmst + ONEMINUTE)):
             break
-
         time.sleep(20.0)
 
 # begin execution
