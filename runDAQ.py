@@ -125,7 +125,7 @@ def cur_sidereal(longitude):
     sidt = "%02d,%02d,%02d" % (hours, minutes, seconds)
     return (sidt)
 
-def lmst_wait(lmst) :
+def lmst_wait(target_lmst) :
     TENSECS = 10.0/3600.0
     carp = getObserver("carp")
     longitude = carp.lon
@@ -138,11 +138,11 @@ def lmst_wait(lmst) :
         lmst = float(x[0])
         lmst += float(x[1])/60.0
         lmst += float(x[2])/3600.0
-
-        if (lmst >= args.lmst and lmst <= (args.lmst + TENSECS)):
+        print("In runDAQ.lmst_wait() current lmst={0:.2f} target lmst={1:.2f}".format(lmst,target_lmst))
+        if (lmst >= target_lmst and lmst <= (target_lmst + TENSECS)):
             break
 
-        time.sleep(1.0)
+        time.sleep(5.0)
 
 # begin execution
 
