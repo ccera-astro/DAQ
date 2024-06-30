@@ -421,7 +421,7 @@ blocks:
     label: RF Gain
     short_id: ''
     type: eng_float
-    value: '65'
+    value: '69.4'
   states:
     bus_sink: false
     bus_source: false
