@@ -66,7 +66,7 @@ def E2G( RA, dec) :
 #   build meta data dictionary 
 def buildMetadata(args,tb) :
     dict = {}
-    dict['freq'] = tb.get_f1() 
+    dict['freq'] = tb.get_frequency() 
     dict['srate'] = srate = tb.get_samp_rate() 
     dict['fft_size'] = fft_size = tb.get_fft_size()
     N = tb.get_decimation_factor() 
