@@ -29,7 +29,7 @@ import math
 
 class DAQ(gr.top_block):
 
-    def __init__(self, base_name='Doppler', decimation_factor=10000, device="type=n3xx,product=n310,addr=192.168.20.2", fft_size=2048, frequency=1420.4058e6, mclock=125e6, pps='gpsdo', refclock='gpsdo', rfgain=69.4, samp_rate=1.25e7, seconds=3600, subdev="A:0 A:1"):
+    def __init__(self, base_name='Doppler', decimation_factor=10000, device="type=n3xx,product=n310,addr=192.168.20.2", fft_size=2048, frequency=1420.4058e6, mclock=125e6, pps='gpsdo', refclock='gpsdo', rfgain=67.2, samp_rate=1.25e7, seconds=3600, subdev="A:0 A:1"):
         gr.top_block.__init__(self, "DAQ", catch_exceptions=True)
 
         ##################################################
@@ -244,7 +244,7 @@ def argument_parser():
         "--refclock", dest="refclock", type=str, default='gpsdo',
         help="Set Reference clock type [default=%(default)r]")
     parser.add_argument(
-        "--rfgain", dest="rfgain", type=eng_float, default=eng_notation.num_to_str(float(69.4)),
+        "--rfgain", dest="rfgain", type=eng_float, default=eng_notation.num_to_str(float(67.2)),
         help="Set RF Gain [default=%(default)r]")
     parser.add_argument(
         "--samp-rate", dest="samp_rate", type=eng_float, default=eng_notation.num_to_str(float(1.25e7)),
