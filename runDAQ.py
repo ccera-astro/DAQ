@@ -183,7 +183,10 @@ if args.lmst != None :
     lmst_wait(args.lmst)
     print("Starting")
 
-tb = DAQ(base_name=file_base_name, seconds=args.run_time, f1=f1, f2=f2, 
+#tb = DAQ(base_name=file_base_name, seconds=args.run_time, f1=f1, f2=f2, 
+#         fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
+
+tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
          fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
 
 if printOn : print("Top block instantiated.")
