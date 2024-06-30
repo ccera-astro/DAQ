@@ -76,7 +76,7 @@ class DAQ(gr.top_block):
         # Sleep 1 second to ensure next PPS has come
         time.sleep(1)
 
-        self.uhd_usrp_source_0.set_center_freq(frequency, 0)
+        self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(frequency,((samp_rate/2.0)+100e3)), 0)
         self.uhd_usrp_source_0.set_antenna("RX2", 0)
         self.uhd_usrp_source_0.set_gain(rfgain, 0)
 
@@ -157,7 +157,7 @@ class DAQ(gr.top_block):
 
     def set_frequency(self, frequency):
         self.frequency = frequency
-        self.uhd_usrp_source_0.set_center_freq(self.frequency, 0)
+        self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(self.frequency,((self.samp_rate/2.0)+100e3)), 0)
         self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(self.frequency,((self.samp_rate/2.0)+100e3)), 1)
 
     def get_mclock(self):
@@ -193,6 +193,7 @@ class DAQ(gr.top_block):
         self.samp_rate = samp_rate
         self.blocks_head_0.set_length((int(self.seconds*self.samp_rate)))
         self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
+        self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(self.frequency,((self.samp_rate/2.0)+100e3)), 0)
         self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(self.frequency,((self.samp_rate/2.0)+100e3)), 1)
 
     def get_seconds(self):
