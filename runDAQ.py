@@ -148,21 +148,25 @@ args = getArgs()
 printOn = args.printOn 
 run_mode = args.run_mode.lower() 
 
+f_clock = 1.25e8 
 if run_mode == "pulsar" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 32
     decimation_factor = 250
-    samp_rate = 2.5e7 
+    #samp_rate = 2.5e7
+    samp_rate = f_clock/6.  
 elif run_mode == "doppler" :
     f1, f2 = 1.418e9, 1.418e9
     fft_size = 2048
     decimation_factor = 10000
-    samp_rate = 1.0e7
+    #samp_rate = 1.0e7
+    samp_rate = f_clock/20. 
 elif run_mode == "generic" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 2048
     decimation_factor = 10000
-    samp_rate = 1.0e7
+    #samp_rate = 1.0e7
+    samp_rate = f_clock/20. 
 else :
     print("**ERROR** invalid run_mode={0:s} ***Exiting***".format(run_mode))
     exit()
