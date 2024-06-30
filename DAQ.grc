@@ -340,7 +340,7 @@ blocks:
     label: Center Frequency (Hz)
     short_id: ''
     type: eng_float
-    value: 1420.4058e6
+    value: 1420.4e6
   states:
     bus_sink: false
     bus_source: false
@@ -1002,7 +1002,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [72, 140.0]
+    coordinate: [120, 140.0]
     rotation: 0
     state: true
 
