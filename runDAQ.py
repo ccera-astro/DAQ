@@ -156,11 +156,10 @@ if run_mode == "pulsar" :
     #samp_rate = 2.5e7
     samp_rate = f_clock/6.  
 elif run_mode == "doppler" :
-    f1, f2 = 1.419e9, 1.419e9
+    f1, f2 = 1.418e9, 1.418e9
     fft_size = 2048
     decimation_factor = 10000
-    #samp_rate = 1.0e7
-    samp_rate = f_clock/20. 
+    samp_rate = f_clock/16. 
 elif run_mode == "generic" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 2048
