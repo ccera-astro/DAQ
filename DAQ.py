@@ -80,7 +80,7 @@ class DAQ(gr.top_block):
         self.uhd_usrp_source_0.set_antenna("RX2", 0)
         self.uhd_usrp_source_0.set_gain(rfgain, 0)
 
-        self.uhd_usrp_source_0.set_center_freq(frequency, 1)
+        self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(frequency,((samp_rate/2.0)+100e3)), 1)
         self.uhd_usrp_source_0.set_antenna("RX2", 1)
         self.uhd_usrp_source_0.set_gain(rfgain, 1)
         self.single_pole_iir_filter_xx_0_0 = filter.single_pole_iir_filter_ff(alpha_IIR, fft_size)
@@ -158,7 +158,7 @@ class DAQ(gr.top_block):
     def set_frequency(self, frequency):
         self.frequency = frequency
         self.uhd_usrp_source_0.set_center_freq(self.frequency, 0)
-        self.uhd_usrp_source_0.set_center_freq(self.frequency, 1)
+        self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(self.frequency,((self.samp_rate/2.0)+100e3)), 1)
 
     def get_mclock(self):
         return self.mclock
@@ -193,6 +193,7 @@ class DAQ(gr.top_block):
         self.samp_rate = samp_rate
         self.blocks_head_0.set_length((int(self.seconds*self.samp_rate)))
         self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
+        self.uhd_usrp_source_0.set_center_freq(uhd.tune_request(self.frequency,((self.samp_rate/2.0)+100e3)), 1)
 
     def get_seconds(self):
         return self.seconds

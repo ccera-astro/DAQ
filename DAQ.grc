@@ -639,7 +639,7 @@ blocks:
     bw8: '0'
     bw9: '0'
     center_freq0: frequency
-    center_freq1: frequency
+    center_freq1: uhd.tune_request(frequency,((samp_rate/2.0)+100e3))
     center_freq10: '0'
     center_freq11: '0'
     center_freq12: '0'
