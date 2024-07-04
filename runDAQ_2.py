@@ -201,7 +201,6 @@ if run_mode == "pulsar" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 32
     decimation_factor = 250
-    #samp_rate = 2.5e7
     samp_rate = f_clock/6.  
 elif run_mode == "doppler" :
     f1, f2 = 1.4204e9, 1.4204e9
@@ -217,7 +216,6 @@ elif run_mode == "generic" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 2048
     decimation_factor = 10000
-    #samp_rate = 1.0e7
     samp_rate = f_clock/20. 
 else :
     print("**ERROR** invalid run_mode={0:s} ***Exiting***".format(run_mode))
@@ -229,12 +227,6 @@ if args.fft_size > 0 : fft_size = args.fft_size
 if args.decimation_factor > 0 : decimation_factor = args.decimation_factor
 if args.samp_rate > 0. : samp_rate = args.samp_rate  
 
-dir = args.dir 
-file_base_name = dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
-
-print("Entering runDAQ: Run mode={0:s} file_base_name={1:s} n_jobs={2:d}".format(
-    run_mode,file_base_name,args.n_jobs))
-
 if args.lmst != None : 
     print("Waiting for lmst={0:.2f}".format(args.lmst))
     lmst_wait(args.lmst)
@@ -244,6 +236,11 @@ if args.lmst != None :
 
 for i in range(args.n_jobs) :
 
+    file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
+
+    print("In runDAQ: Run mode={0:s} file_base_name={1:s} {2:d} of {3:d}".format(
+    run_mode,file_base_name,i,args.n_jobs))
+    
     tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
             fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
 
@@ -276,7 +273,7 @@ for i in range(args.n_jobs) :
         os.system("rm {0:s}_2.raw".format(file_base_name))
 
     del tb
-    
+
 sys.exit(0)
 
 
