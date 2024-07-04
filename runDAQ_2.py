@@ -275,6 +275,8 @@ for i in range(args.n_jobs) :
         os.system("rm {0:s}_1.raw".format(file_base_name))
         os.system("rm {0:s}_2.raw".format(file_base_name))
 
+    del tb
+    
 sys.exit(0)
 
 
