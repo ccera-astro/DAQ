@@ -70,7 +70,7 @@ def E2G( RA, dec) :
     return degrees(gCoords.lon), degrees(gCoords.lat)
 
 #   build meta data dictionary 
-def buildMetadata(args,tb) :
+def buildMetadata(run_mode,target,tb) :
     dict = {}
     dict['freq'] = tb.get_frequency() 
     dict['srate'] = srate = tb.get_samp_rate() 
@@ -79,8 +79,8 @@ def buildMetadata(args,tb) :
     dict['decimation_factor'] = N 
     dict['t_sample'] = 1./(srate/fft_size/N)
     dict['n_chans'] = 2
-    dict['run_mode'] = args.run_mode  
-    dict['target'] = args.target 
+    dict['run_mode'] = run_mode  
+    dict['target'] = target 
     az, alt, az_rate, alt_rate = getAzAlt()
     dict['az'] = az
     dict['alt'] = alt
@@ -114,23 +114,26 @@ def signal_handler(sig, frame):
 
 def set_filename(file_name) :
     print("Enter set_filename()")
-    print("File name changed to {0:s}".format(file_name))
+    print("   File name changed to {0:s}".format(file_name))
     file_base_name = tb.get_base_name() 
-    print("Present file_base_name={0:s}".format(file_base_name))
-    print("metadata[t_start]={0:f}".format(metadata['t_start']))
-
+    print("   Present file_base_name={0:s}".format(file_base_name))
     # At beginning of move position system changes output file to /dev/null
     # When the move is complete, the file is set a non-null value
     try :
-        if file_name == "/dev/null" :   
+        import json
+        with open(file_base_name + ".json") as json_file : metadata = json.load(json_file)
+        if file_name == "/dev/null" :       
             tb.set_base_name("data")
             metadata["run_time"] = time.time() - metadata["t_start"]
             writeMetadata(metadata,file_base_name)
+            print("   base_name set to /dev/null")
         else :
-            metadata = buildMetadata(args,tb)
+            metadata = buildMetadata(metadata['run_mode'],metadata['target'],tb)
             metadata['t_start'] = time.time()    # this will not be as precise as time_catcher() but should be OK
             file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
             writeMetadata(metadata,file_base_name)
+            tb.set_base_name(file_base_name)
+            print("   base_name set to {0:s}".format(file_base_name))
         return True
     except :
         print("Exception in answerXMLRC() ignored")
@@ -280,7 +283,7 @@ for i in range(args.n_jobs) :
 
     if printOn : print("Top block instantiated.")
 
-    metadata = buildMetadata(args,tb)
+    metadata = buildMetadata(args.run_mode,args.target,tb)
 
     if printOn : print("Metadata built.  metadata={0:s}".format(str(metadata)))
 
