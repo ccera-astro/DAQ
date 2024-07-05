@@ -113,10 +113,9 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 def set_filename(file_name) :
-    global file_base_name 
-    global metadata
-    global tb 
+    print("Enter set_filename()")
     print("File name changed to {0:s}".format(file_name))
+    file_base_name = tb.get_base_name() 
     print("Present file_base_name={0:s}".format(file_base_name))
     print("metadata[t_start]={0:f}".format(metadata['t_start']))
 
