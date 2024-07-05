@@ -113,9 +113,11 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 def set_filename(file_name) :
-    # several variables appear not to be defined, but maybe that's OK?
+    global file_base_name 
+    global metadata
+    global tb 
     print("File name changed to {0:s}".format(file_name))
-    print("Presnt file_base_name={0:s}".format(file_base_name))
+    print("Present file_base_name={0:s}".format(file_base_name))
     print("metadata[t_start]={0:f}".format(metadata['t_start']))
 
     # At beginning of move position system changes output file to /dev/null
