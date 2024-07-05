@@ -113,16 +113,17 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 def set_filename(file_name) :
-    print("Enter set_filename()")
+    print("Enter set_filename() file_name={0:s}".format(file_name))
     file_base_name = tb.get_base_name() 
     print("   Present file_base_name={0:s}".format(file_base_name))
     # At beginning of move position system changes output file to /dev/null
     # When the move is complete, the file is set a non-null value
     try :
-        import json
-        with open(file_base_name + ".json") as json_file : metadata = json.load(json_file)
-        print("   metadata loaded")
+        
         if file_name == "/dev/null" :       
+            import json
+            with open(file_base_name + ".json") as json_file : metadata = json.load(json_file)
+            print("   metadata loaded")
             tb.set_base_name("data")
             metadata["run_time"] = time.time() - metadata["t_start"]
             writeMetadata(metadata,file_base_name)
@@ -137,7 +138,7 @@ def set_filename(file_name) :
             print("   base_name set to {0:s}".format(file_base_name))
         return True
     except :
-        print("Exception in answerXMLRC() ignored")
+        print("Exception in set_filename() ignored")
         return False 
 
 def cur_sidereal(longitude):
