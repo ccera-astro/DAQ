@@ -114,7 +114,6 @@ def signal_handler(sig, frame):
 
 def set_filename(file_name) :
     print("Enter set_filename()")
-    print("   File name changed to {0:s}".format(file_name))
     file_base_name = tb.get_base_name() 
     print("   Present file_base_name={0:s}".format(file_base_name))
     # At beginning of move position system changes output file to /dev/null
@@ -122,13 +121,15 @@ def set_filename(file_name) :
     try :
         import json
         with open(file_base_name + ".json") as json_file : metadata = json.load(json_file)
+        print("   metadata loaded")
         if file_name == "/dev/null" :       
             tb.set_base_name("data")
             metadata["run_time"] = time.time() - metadata["t_start"]
             writeMetadata(metadata,file_base_name)
             print("   base_name set to /dev/null")
         else :
-            metadata = buildMetadata(metadata['run_mode'],metadata['target'],tb)
+            print("   Changing file_name to {0:s}".format(file_name))
+            metadata = buildMetadata('doppler','galactic_scan',tb)
             metadata['t_start'] = time.time()    # this will not be as precise as time_catcher() but should be OK
             file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
             writeMetadata(metadata,file_base_name)
