@@ -26,6 +26,7 @@ def getArgs() :
     parser.add_argument("--n_jobs",type=int,default=1,help="Number of jobs to run.")
     parser.add_argument("--no_avg",action="store_true",help="Don't make an .avg file")
     parser.add_argument("--no_sum",action="store_true",help="Don't make a .sum file")
+    parser.add_argument("--XMLRPC",action="store_true",help="Enable XMLRPC control")
     return parser.parse_args()
 
 def getAzAlt() :
@@ -111,6 +112,29 @@ def signal_handler(sig, frame):
     endRun(metadata,file_base_name)
     sys.exit(0)
 
+def set_filename(file_name) :
+    # several variables appear not to be defined, but maybe that's OK?
+    print("File name changed to {0:s}".format(file_name))
+    print("Presnt file_base_name={0:s}".format(file_base_name))
+    print("metadata[t_start]={0:f}".format(metadata['t_start']))
+
+    # At beginning of move position system changes output file to /dev/null
+    # When the move is complete, the file is set a non-null value
+    try :
+        if file_name == "/dev/null" :   
+            tb.set_base_name("data")
+            metadata["run_time"] = time.time() - metadata["t_start"]
+            writeMetadata(metadata,file_base_name)
+        else :
+            metadata = buildMetadata(args,tb)
+            metadata['t_start'] = time.time()    # this will not be as precise as time_catcher() but should be OK
+            file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
+            writeMetadata(metadata,file_base_name)
+        return True
+    except :
+        print("Exception in answerXMLRC() ignored")
+        return False 
+
 def cur_sidereal(longitude):
     longstr = "%02d" % int(longitude)
     longstr = longstr + ":"
@@ -146,7 +170,6 @@ def lmst_wait(target_lmst) :
         if (lmst >= target_lmst and lmst <= (target_lmst + ONEMINUTE)):
             break
         time.sleep(20.0)
-
 
 def getData(file,fft_size) :
     print("Reading from file: {0:s}".format(file))
@@ -187,8 +210,6 @@ def makeAverageFile(base_name, metadata) :
         print("len(avg_data)={0:d}".format(len(avg_data)))
 
         avg_data.tofile(base_name + "_{0:d}.avg".format(chan))
-
-
 
 # begin execution
 
@@ -232,15 +253,27 @@ if args.lmst != None :
     lmst_wait(args.lmst)
     print("Starting")
 
-# allow for the possibility of a chain of jobs
+# set up XMLRPC server so as to listen to control messages from 
+# the positioning system.   Create and run the XML server in a 
+# separate thread
 
+if args.XMLRPC :
+    from xmlrpc.server import SimpleXMLRPCServer
+    import threading
+    xmlserver = SimpleXMLRPCServer(('0.0.0.0', args.xmlport), allow_none=True, logRequests=False)
+    xmlserver.register_function(set_filename)
+    server_thread = threading.Thread(target=xmlserver.serve_forever)
+    server_thread.daemon = True
+    server_thread.start()
+
+# allow for the possibility of a chain of jobs
 for i in range(args.n_jobs) :
 
     file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
 
     print("In runDAQ: Run mode={0:s} file_base_name={1:s} {2:d} of {3:d}".format(
     run_mode,file_base_name,i,args.n_jobs))
-    
+
     tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
             fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
 
