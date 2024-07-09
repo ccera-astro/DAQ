@@ -287,7 +287,7 @@ for i in range(args.n_jobs) :
         print("Error instantiating top_block.  Wait 10 seconds and try again.")
         time.sleep(10.)
         continue
-    
+
     if printOn : print("Top block instantiated.")
 
     metadata = buildMetadata(args.run_mode,args.target,tb)
@@ -317,6 +317,7 @@ for i in range(args.n_jobs) :
         os.system("rm {0:s}_2.raw".format(file_base_name))
 
     del tb
+    if args.n_jobs > 1 : time.sleep(10.)
 
 sys.exit(0)
 
