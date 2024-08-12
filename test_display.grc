@@ -42,7 +42,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [696, 452.0]
+    coordinate: [312, 300.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -66,7 +66,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [696, 516.0]
+    coordinate: [320, 396.0]
     rotation: 0
     state: true
 - name: blocks_deinterleave_0
@@ -155,41 +155,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [272, 412.0]
-    rotation: 0
-    state: true
-- name: f3
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: Channel 3 Freq
-    short_id: ''
-    type: eng_float
-    value: 611e6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [416, 412.0]
-    rotation: 0
-    state: true
-- name: f4
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: Channel 4 Freq
-    short_id: ''
-    type: eng_float
-    value: 1000e6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [552, 420.0]
+    coordinate: [160, 388.0]
     rotation: 0
     state: true
 - name: fft_size
@@ -206,7 +172,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [168, 420.0]
+    coordinate: [152, 276.0]
     rotation: 0
     state: true
 - name: import_0_0

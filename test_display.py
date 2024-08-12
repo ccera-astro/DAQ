@@ -29,7 +29,7 @@ import sip
 
 class test_display(gr.top_block, Qt.QWidget):
 
-    def __init__(self, f1=1410e6, f2=1410e6, f3=611e6, f4=1000e6, fft_size=2048, srate=10e6):
+    def __init__(self, f1=1410e6, f2=1410e6, fft_size=2048, srate=10e6):
         gr.top_block.__init__(self, "Test Display", catch_exceptions=True)
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Test Display")
@@ -65,8 +65,6 @@ class test_display(gr.top_block, Qt.QWidget):
         ##################################################
         self.f1 = f1
         self.f2 = f2
-        self.f3 = f3
-        self.f4 = f4
         self.fft_size = fft_size
         self.srate = srate
 
@@ -101,7 +99,7 @@ class test_display(gr.top_block, Qt.QWidget):
         self.qtgui_vector_sink_f_0.set_ref_level(0)
 
 
-        labels = ["%.3fMHz" % (f1 / 1.0e6), "%.3fMHz" % (f2 / 1.0e6), "%.3fMHz" % (f3 / 1.0e6), "%.3fMHz" % (f4 / 1.0e6), '',
+        labels = ["%.3fMHz" % (f1 / 1.0e6), "%.3fMHz" % (f2 / 1.0e6), '"%.3fMHz" % (f3 / 1.0e6)', '"%.3fMHz" % (f4 / 1.0e6)', '',
             '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
@@ -156,18 +154,6 @@ class test_display(gr.top_block, Qt.QWidget):
     def set_f2(self, f2):
         self.f2 = f2
 
-    def get_f3(self):
-        return self.f3
-
-    def set_f3(self, f3):
-        self.f3 = f3
-
-    def get_f4(self):
-        return self.f4
-
-    def set_f4(self, f4):
-        self.f4 = f4
-
     def get_fft_size(self):
         return self.fft_size
 
@@ -215,12 +201,6 @@ def argument_parser():
         "--f2", dest="f2", type=eng_float, default=eng_notation.num_to_str(float(1410e6)),
         help="Set Channel 2 Freq [default=%(default)r]")
     parser.add_argument(
-        "--f3", dest="f3", type=eng_float, default=eng_notation.num_to_str(float(611e6)),
-        help="Set Channel 3 Freq [default=%(default)r]")
-    parser.add_argument(
-        "--f4", dest="f4", type=eng_float, default=eng_notation.num_to_str(float(1000e6)),
-        help="Set Channel 4 Freq [default=%(default)r]")
-    parser.add_argument(
         "--fft-size", dest="fft_size", type=intx, default=2048,
         help="Set FFT Size [default=%(default)r]")
     parser.add_argument(
@@ -238,7 +218,7 @@ def main(top_block_cls=test_display, options=None):
         Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls(f1=options.f1, f2=options.f2, f3=options.f3, f4=options.f4, fft_size=options.fft_size, srate=options.srate)
+    tb = top_block_cls(f1=options.f1, f2=options.f2, fft_size=options.fft_size, srate=options.srate)
 
     tb.start()
 
