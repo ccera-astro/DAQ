@@ -109,7 +109,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1744, 44.0]
+    coordinate: [1808, 44.0]
     rotation: 0
     state: true
 - name: blocks_file_sink_1
@@ -127,7 +127,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1736, 244.0]
+    coordinate: [1808, 244.0]
     rotation: 0
     state: true
 - name: blocks_head_0
@@ -146,6 +146,25 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [544, 68.0]
+    rotation: 0
+    state: true
+- name: blocks_interleave_0
+  id: blocks_interleave
+  parameters:
+    affinity: ''
+    alias: ''
+    blocksize: '1'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '2'
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1808, 152.0]
     rotation: 0
     state: true
 - name: blocks_keep_one_in_n_0
@@ -328,7 +347,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 236.0]
+    coordinate: [904, 236.0]
     rotation: 0
     state: true
 - name: frequency
@@ -1005,13 +1024,38 @@ blocks:
     coordinate: [120, 140.0]
     rotation: 0
     state: true
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:14200
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2040, 124.0]
+    rotation: 0
+    state: true
 
 connections:
 - [blocks_complex_to_mag_squared_0, '0', single_pole_iir_filter_xx_0, '0']
 - [blocks_complex_to_mag_squared_0_0, '0', single_pole_iir_filter_xx_0_0, '0']
 - [blocks_head_0, '0', blocks_stream_to_vector_0, '0']
+- [blocks_interleave_0, '0', zeromq_pub_sink_0, '0']
 - [blocks_keep_one_in_n_0, '0', blocks_file_sink_0, '0']
+- [blocks_keep_one_in_n_0, '0', blocks_interleave_0, '0']
 - [blocks_keep_one_in_n_0_0, '0', blocks_file_sink_1, '0']
+- [blocks_keep_one_in_n_0_0, '0', blocks_interleave_0, '1']
 - [blocks_keep_one_in_n_2, '0', rx_time_catcher, '0']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
 - [blocks_stream_to_vector_0_0, '0', fft_vxx_0_0, '0']

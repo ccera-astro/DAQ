@@ -21,6 +21,7 @@ from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import uhd
 import time
+from gnuradio import zeromq
 import DAQ_rx_time_catcher as rx_time_catcher  # embedded python block
 import math
 
@@ -57,6 +58,7 @@ class DAQ(gr.top_block):
         # Blocks
         ##################################################
 
+        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_float, fft_size, 'tcp://127.0.0.1:14200', 100, False, (-1), '', True, True)
         self.uhd_usrp_source_0 = uhd.usrp_source(
             ",".join((device, "master_clock_rate=%f" % mclock)),
             uhd.stream_args(
@@ -93,6 +95,7 @@ class DAQ(gr.top_block):
         self.blocks_keep_one_in_n_2 = blocks.keep_one_in_n(gr.sizeof_gr_complex*1, 50)
         self.blocks_keep_one_in_n_0_0 = blocks.keep_one_in_n(gr.sizeof_float*fft_size, decimation_factor)
         self.blocks_keep_one_in_n_0 = blocks.keep_one_in_n(gr.sizeof_float*fft_size, decimation_factor)
+        self.blocks_interleave_0 = blocks.interleave(gr.sizeof_float*fft_size, 1)
         self.blocks_head_0 = blocks.head(gr.sizeof_gr_complex*1, (int(seconds*samp_rate)))
         self.blocks_file_sink_1 = blocks.file_sink(gr.sizeof_float*fft_size, base_name +"_2.raw", False)
         self.blocks_file_sink_1.set_unbuffered(False)
@@ -108,8 +111,11 @@ class DAQ(gr.top_block):
         self.connect((self.blocks_complex_to_mag_squared_0, 0), (self.single_pole_iir_filter_xx_0, 0))
         self.connect((self.blocks_complex_to_mag_squared_0_0, 0), (self.single_pole_iir_filter_xx_0_0, 0))
         self.connect((self.blocks_head_0, 0), (self.blocks_stream_to_vector_0, 0))
+        self.connect((self.blocks_interleave_0, 0), (self.zeromq_pub_sink_0, 0))
         self.connect((self.blocks_keep_one_in_n_0, 0), (self.blocks_file_sink_0, 0))
+        self.connect((self.blocks_keep_one_in_n_0, 0), (self.blocks_interleave_0, 0))
         self.connect((self.blocks_keep_one_in_n_0_0, 0), (self.blocks_file_sink_1, 0))
+        self.connect((self.blocks_keep_one_in_n_0_0, 0), (self.blocks_interleave_0, 1))
         self.connect((self.blocks_keep_one_in_n_2, 0), (self.rx_time_catcher, 0))
         self.connect((self.blocks_stream_to_vector_0, 0), (self.fft_vxx_0, 0))
         self.connect((self.blocks_stream_to_vector_0_0, 0), (self.fft_vxx_0_0, 0))
