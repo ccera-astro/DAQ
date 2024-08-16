@@ -12,7 +12,7 @@ runDAQ.py.
 The mode is specified with the `run_mode` parameter.
 The choice of mode determines the default values of other run time parameters,
 such as `f_center, fft_size, samp_rate, decimation_factor`, etc.    These 
-defaults, can be overridden by specifying them explicitly at run time.
+defaults can be overridden by specifying them explicitly at run time.
 
 ### Other runDAQ.py parameters 
 
@@ -27,20 +27,20 @@ defaults, can be overridden by specifying them explicitly at run time.
 
 ### Data formats
 
-The base file name of a given dataset is a time stamp of the form YYYY-MM-DD-mmmm 
+The base file name of a given dataset is a time stamp of the form YYYY-MM-DD-hhmm 
 followed by either "_1" or "_2" corresponding to the receiver channel.
 
 The following file extensions are used:
 
-- `.json`  This is JSON file containing the run metadata
+- `.json`  This is a JSON file containing the run metadata
 - `.raw`   This is a time series of vectors (FFT PSDs)
 - `.avg`   This is a PSD averaged over the full .raw file
 - `.sum`   This is a time series corresponding to the sum 
          of the PSDs in the .raw file.
 
 During data taking, the output of the DAQ flowgraph is written to the disk 
-in the form of series of vectors (FFT PSDs) (the `.raw` file).  By default, to save 
-disk space, at the end of each run, either a `.avg` file (for Doppler mode) or
+in the form of series of vectors (FFT PSDs) (the `.raw` file).  To save 
+disk space, by default at the end of each run, either a `.avg` file (for Doppler mode) or
 a `.sum` file (for Pulsar mode) is computed and <span style="color:red"> the .raw file is deleted. </span>
 To avoid this, the --no_avg or --no_sum parameters can be used. 
 
