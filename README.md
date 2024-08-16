@@ -38,6 +38,7 @@ The following file extensions are used:
 - `.sum`   This is a time series corresponding to the sum 
          of the PSDs in the .raw file.
 
+### Important Note ###
 During data taking, the output of the DAQ flowgraph is written to the disk 
 in the form of series of vectors (FFT PSDs) (the `.raw` file).  To save 
 disk space, by default at the end of each run, either a `.avg` file (for Doppler mode) or
