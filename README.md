@@ -14,8 +14,8 @@ The choice of mode determines the default values of other run time parameters,
 such as `f_center, fft_size, samp_rate, decimation_factor`, etc.    These 
 defaults can be overridden by specifying them explicitly at run time.
 
-### Other runDAQ.py parameters 
-
+### `runDAQ.py` parameters 
+- `run_mode`: determines run mode (see above)
 - `run_type`: which should be either "track" or "transit"
 - `run_time`: the total run time in integer seconds
 - `target`: the astrophysical target, e.g., M31  
@@ -27,8 +27,8 @@ defaults can be overridden by specifying them explicitly at run time.
 
 ### Data formats
 
-The base file name of a given dataset is a time stamp of the form YYYY-MM-DD-hhmm 
-followed by either "_1" or "_2" corresponding to the receiver channel.
+The base file name of a given dataset is a time stamp of the form `YYYY-MM-DD-hhmm` 
+followed by either `"_1"` or `"_2"` corresponding to the receiver channel.
 
 The following file extensions are used:
 
