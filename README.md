@@ -1,11 +1,12 @@
 # DAQ
 
 ## Data acquisition scripts.    
-The principal modules are DAQ.py,
-which is the Python representation of the DAQ.grc flowgraph;
-and runDAQ.py, which is used to launch DAQ.py.   Although DAQ.py
-can be run directly, it is generally more convenient to use
-runDAQ.py.
+The principal modules are `DAQ.py`,
+which is the Python representation of the `DAQ.grc` flowgraph;
+and `runDAQ.py`, which is used to launch `DAQ.py`. `DAQ.py` incorporates
+a ZMQ PUB Sink block, which can be used to monitor the data in real time. 
+ Although `DAQ.py`can be run directly, it is generally more convenient to use
+`runDAQ.py`.
 
 ### Run modes 
 `runDAQ.py` runs in four basic "modes": pulsar, doppler, scan, or generic.
@@ -18,9 +19,12 @@ defaults can be overridden by specifying them explicitly at run time.
 - `run_mode`: determines run mode (see above)
 - `run_type`: which should be either "track" or "transit"
 - `run_time`: the total run time in integer seconds
+- `data_dir` : data directory 
 - `target`: the astrophysical target, e.g., M31  
   Note that setting this parameter to "test" or "junk" will lead to eventual deletion.
 - `lmst`: wait until this time in LMST (specified in hours) before starting the DAQ
+- `n_jobs` : setting this parameter causes the same run to be repeated `n_jobs` time.  This
+is useful, for example, if one wants to take a series of (say) 10 minute runs. 
 - `XMLRPC`: enable control over file name changing via XMLRPC
 - `no_avg`: don't compute the average PSD (see below)
 - `no_sum`: don't compute the sum time series (see below)
