@@ -316,8 +316,8 @@ for i in range(args.n_jobs) :
     if (run_mode == "pulsar" or run_mode == "scan") and not args.no_sum : makeSumFile(file_base_name, metadata)
     if run_mode == "doppler" and not args.no_avg : 
         makeAverageFile(file_base_name, metadata)
-        os.system("rm {0:s}_1.raw".format(file_base_name))
-        os.system("rm {0:s}_2.raw".format(file_base_name))
+        os.remove("{0:s}_1.raw".format(file_base_name))
+        os.remove("{0:s}_2.raw".format(file_base_name))
 
     del tb
     if args.n_jobs > 1 : time.sleep(10.)
