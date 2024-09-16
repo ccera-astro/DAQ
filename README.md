@@ -39,8 +39,9 @@ The following file extensions are used:
 - `.json`  This is a JSON file containing the run metadata
 - `.raw`   This is a time series of vectors (FFT PSDs)
 - `.avg`   This is a PSD averaged over the full .raw file
-- `.sum`   This is a time series corresponding to the sum 
-         of the PSDs in the .raw file.
+- `.sum`   This is a time series corresponding to the sum of the PSDs in the .raw file.
+- `.npz`   This file format combines both channels, add MJD timestamp information, and provides a result in `numpy`'s `.npz` format.   See the `makeNPZ` section below for instructions on converting `.sum` files to `.npz` files.
+
 
 ### Important Note ###
 During data taking, the output of the DAQ flowgraph is written to the disk 
