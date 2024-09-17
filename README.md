@@ -50,6 +50,11 @@ disk space, by default at the end of each run, either a `.avg` file (for Doppler
 a `.sum` file (for Pulsar mode) is computed and <span style="color:red"> the .raw file is deleted. </span>
 To avoid this, the --no_avg or --no_sum parameters can be used. 
 
+### Troubleshooting
+If `runDAQ.py` fails to instantiate a `top_block` try entering the following command
+to rebuild the `DAQ.py` script.
+
+`grcc DAQ.grc` 
 
 ### `makeNPZ.py` ###
 A utility script called `makeNPZ.py` has been provided to convert `.sum` files to the `.npz` format that is compatible with Princeton's PHY312 pulsar lab.   The run parameters are 

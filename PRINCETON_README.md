@@ -4,7 +4,7 @@
 The main DAQ script is `runDAQ.py`.  Information on this script can
 be found in the `README.md` file in this repository.  
 
-### Running `runDAQ.py` 
+## Running `runDAQ.py` 
 
 Here we assume a one-hour run targeting pulsar J0332+5434 .  Once
 the dish has been set to track this star, enter the following command:
@@ -27,6 +27,12 @@ with the PHY312 handout, enter the following command
 
 The resulting files (`.json` and `.npz`) can then be copied using `ssh` to a 
 machine at Princeton.
+
+## Troubleshooting
+If `runDAQ.py` fails to instantiate a `top_block` try entering the following command
+to rebuild the `DAQ.py` script.
+
+`grcc DAQ.grc` 
 
 
 

@@ -18,7 +18,7 @@ def getArgs() :
 
 def getFileName(args) :
     if args.data_dir : data_dir = args.data_dir 
-    else : data_dir = "/home/{0:s}/data/".format(os.login)
+    else : data_dir = "/home/{0:s}/data/".format(os.getlogin())
     return data_dir + args.base_name 
 
 def downSample(x,n):
