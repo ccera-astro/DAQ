@@ -51,5 +51,10 @@ a `.sum` file (for Pulsar mode) is computed and <span style="color:red"> the .ra
 To avoid this, the --no_avg or --no_sum parameters can be used. 
 
 
+### `makeNPZ.py` ###
+A utility script called `makeNPZ.py` has been provided to convert `.sum` files to the `.npz` format that is compatible with Princeton's PHY312 pulsar lab.   The run parameters are 
 
+- `data_dir`: data directory (default = `/home/phy312/data` if run from the phy312 account)
+- `base_name`: base name of data file--e.g. 2024-08-23-2121 
+- `down_sample`: number of samples to combine (default = 4)
 
