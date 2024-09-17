@@ -1,33 +1,25 @@
 #!/usr/bin/env python3
 
 # convert .sum data format to .npz data format that is compatible 
-# with PHY312 lab writeup
+# with PHY312 lab handout 
 
 import numpy as np
 import json 
-import socket
-import astropy 
+import os 
 
 def getArgs() :
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-p","--printLevel",type=int,help="Print level.")
-    parser.add_argument("--data_dir",default='home/phy312/data',help="data directory")
+    parser.add_argument("--data_dir",default=None,help="data directory")
     parser.add_argument("-b","--base_name",default="2024-06-25-2100",help="File(s) to be analyzed.")
-    parser.add_argument("--down_sample",type=int,default=1,help="Down sample (averaging) factor")
+    parser.add_argument("--down_sample",type=int,default=4,help="Down sample (averaging) factor")
     return parser.parse_args()
 
 def getFileName(args) :
-    data_dir = args.data_dir 
+    if args.data_dir : data_dir = args.data_dir 
+    else : data_dir = "/home/{0:s}/data/".format(os.login)
     return data_dir + args.base_name 
-
-def getData(file,fft_size) :
-    print("Reading from file: {0:s}".format(file))
-    vals = np.fromfile(file, dtype=np.float32)
-    cols = fft_size
-    rows = int(len(vals)/fft_size)
-    vals = np.reshape(vals, (rows,cols))   
-    return vals, rows, cols
 
 def downSample(x,n):
     nIn = len(x)
