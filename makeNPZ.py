@@ -12,17 +12,13 @@ def getArgs() :
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-p","--printLevel",type=int,help="Print level.")
-    parser.add_argument("--data_dir",default=None,help="data directory")
+    parser.add_argument("--data_dir",default='home/phy312/data',help="data directory")
     parser.add_argument("-b","--base_name",default="2024-06-25-2100",help="File(s) to be analyzed.")
     parser.add_argument("--down_sample",type=int,default=1,help="Down sample (averaging) factor")
     return parser.parse_args()
 
 def getFileName(args) :
-    if args.data_dir :
-        data_dir = args.data_dir 
-    else :
-        data_dir = "/mnt/c/Users/marlow/Documents/CCERA/data/Scan/" 
-        if "receiver" in socket.gethostname().lower() : data_dir = "/home/dmarlow/data/"
+    data_dir = args.data_dir 
     return data_dir + args.base_name 
 
 def getData(file,fft_size) :
