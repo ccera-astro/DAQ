@@ -8,7 +8,6 @@ a ZMQ PUB Sink block, which can be used to monitor the data in real time.
  Although `DAQ.py`can be run directly, it is generally more convenient to use
 `runDAQ.py`.
 
-
 ### Run modes 
 `runDAQ.py` runs in four basic "modes": pulsar, doppler, scan, or generic.
 The mode is specified with the `run_mode` parameter.
