@@ -96,7 +96,7 @@ def buildMetadata(run_mode,target,tb) :
     dict['RA'], dict['dec'] = H2E(carp,az,alt)
     dict['gLon'], dict['gLat'] = E2G(dict['RA'],dict['dec'])
     vLSR = vlsr(dict)
-    dict['vLSR'] = vLSR  
+    dict['vLSR'] = -vLSR.value 
     return dict 
     
 #   write metadata out JSON file 
