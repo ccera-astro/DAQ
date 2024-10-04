@@ -8,6 +8,9 @@ from math import degrees
 import ephem 
 import numpy as np 
 import os 
+from astropy.time import Time
+from astropy.coordinates import SkyCoord, EarthLocation
+import astropy.units as u
  
 
 def getArgs() :
@@ -92,6 +95,8 @@ def buildMetadata(run_mode,target,tb) :
     carp = getObserver("carp")
     dict['RA'], dict['dec'] = H2E(carp,az,alt)
     dict['gLon'], dict['gLat'] = E2G(dict['RA'],dict['dec'])
+    vLSR = vlsr(dict)
+    dict['vLSR'] = vLSR  
     return dict 
     
 #   write metadata out JSON file 
@@ -179,6 +184,37 @@ def lmst_wait(target_lmst) :
         if (lmst >= target_lmst and lmst <= (target_lmst + ONEMINUTE)):
             break
         time.sleep(20.0)
+
+def vlsr(metadata,verbose=False):
+    """Compute the line of sight radial velocity
+
+    psrc: SkyCoord object or source
+    loc: EarthLocation object of observer
+    t: Time object
+    """
+    # Observatory location 
+    lat, lon = 45.3491, -76.0413 
+    loc = EarthLocation.from_geodetic(lat = lat*u.deg, lon = lon*u.deg, height = 100*u.m)
+    
+    tra, tdec = metadata['RA'], metadata['dec']
+    psrc = SkyCoord(ra = tra, dec = tdec ,frame = "icrs", unit = (u.deg,u.deg)) 
+    t = Time(metadata['t_start'],scale="utc",format="unix")
+
+    # Direction of motion of the Sun. Info from
+    psun = SkyCoord(ra = "18:03:50.29", dec = "+30:00:16.8",frame = "icrs",unit = (u.hourangle,u.deg))
+    vsun = -20.0*u.km/u.s
+
+    # Radial velocity correction to solar system barycenter
+    vsrc = psrc.radial_velocity_correction(obstime = t, location = loc)
+
+    # Projection of solar velocity towards the source
+    vsun_proj = psrc.cartesian.dot(psun.cartesian)*vsun
+
+    if verbose:
+        print("Barycentric radial velocity: {0:+8.3f}".format(vsrc.to(u.km/u.s)))
+        print("Projected solar velocity:    {0:+8.3f}".format(vsun_proj.to(u.km/u.s)))
+    
+    return vsun_proj-vsrc
 
 def getData(file,fft_size) :
     print("Reading from file: {0:s}".format(file))
