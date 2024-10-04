@@ -198,7 +198,7 @@ def vlsr(metadata,verbose=False):
     
     tra, tdec = metadata['RA'], metadata['dec']
     psrc = SkyCoord(ra = tra, dec = tdec ,frame = "icrs", unit = (u.deg,u.deg)) 
-    t = Time(metadata['t_start'],scale="utc",format="unix")
+    t = Time(time.time(),scale="utc",format="unix")
 
     # Direction of motion of the Sun. Info from
     psun = SkyCoord(ra = "18:03:50.29", dec = "+30:00:16.8",frame = "icrs",unit = (u.hourangle,u.deg))
@@ -340,6 +340,7 @@ for i in range(args.n_jobs) :
     time.sleep(2)
     metadata['t_start'] = float(open(file_base_name+"_ts.txt").readline()) 
     writeMetadata(metadata,file_base_name)
+    print("metadata['t_start]={0} time.time()={1}".format(metadata['t_start'],time.time()))
 
     # this allows one to gracefully exit with Cntl+C 
     signal.signal(signal.SIGINT, signal_handler)
