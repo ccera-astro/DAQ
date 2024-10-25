@@ -50,14 +50,14 @@ def getBaseName(args) :
     if not args.base_name :
         s = data_dir + "*.json"
         files = glob.glob(s)
-        print("In getBaseName() before sort: files={0:s}".format(str(files)))
+        #print("In getBaseName() before sort: files={0:s}".format(str(files)))
         sorted_files = sorted(files)
-        print("\n\nIn getBaseName() after sort: files={0:s}".format(str(sorted_files)))
+        #print("\n\nIn getBaseName() after sort: files={0:s}".format(str(sorted_files)))
         base_name = sorted_files[-1].strip(".json")
     else :
         base_name = data_dir + args.base_name
     
-    print("base_name={0:s}".format(base_name))
+    print("In getBaseName() : base_name={0:s}".format(base_name))
     return base_name
     
 # execution starts here
@@ -80,7 +80,8 @@ else :
     exit() 
 
 while True :
-    alpha, ttime, UVW = getAlpha(args,ttime,UVW)
+    #alpha, ttime, UVW = getAlpha(args,ttime,UVW)
+    alpha = 0.5 
     pd.plotNewSpectrum(args,alpha)      
     time.sleep(1.0)
     
