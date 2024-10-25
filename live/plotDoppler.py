@@ -26,6 +26,8 @@ class plotDoppler() :
         self.file_name = file_name 
         self.count = 0   # number of spectra
         self.offset = 0   # file read offset
+        self.draw_count = 0 
+        self.read_count = 0 
 
     def getData(self) :
         nRead = 0 
@@ -40,8 +42,10 @@ class plotDoppler() :
                 self.offset += 4*self.FFTsize 
             else :
                 if nRead > 0 : power /= nRead
-                break         
-        print("Exiting getData(): nRead={0:d} offset={1:d}".format(nRead,self.offset))
+                break  
+        self.read_count += 1       
+        print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
+            nRead,self.offset,self.read_count))
         return nRead, power
     
     def fitBackground(self,vDoppler,power,n,vSignal) :
@@ -65,17 +69,18 @@ class plotDoppler() :
 
     def initPlot(self,args):
         print("Enter initPlot()")
-        self.fig = plot.figure(figsize=(12, 10), dpi=80)
+        self.fig = plot.figure(figsize=(12, 8), dpi=80)
         self.ax = self.fig.add_subplot(111)
         axx = self.ax
         for item in ([axx.title, axx.xaxis.label, axx.yaxis.label] + axx.get_xticklabels() + axx.get_yticklabels()):
             item.set_fontsize(20)
-        self.fig.suptitle('Live Doppler Display') 
+        self.fig.suptitle('Live Doppler Display',fontsize=14) 
         self.ax.set_xlim([-200.,200.])
         nRecords, power = self.getData()
         self.sumPower = np.zeros_like(power) 
         vDoppler, bkgr_sub_pow = self.anaSpectrum(power)
         self.li, = self.ax.plot(vDoppler, bkgr_sub_pow, 'b.')
+        self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count))
         if not args.sun_mode : self.ax.set_ylim([-5.,50.])
         self.ax.set_title("PSD vs Approach Velocity")
         self.ax.set_xlabel("v (km/s)")
@@ -91,8 +96,10 @@ class plotDoppler() :
         if nRead > 0 :
             print("In plotNewSpectrum() before   : sum(power)={0:e} sum(sumPower)={1:e}".format(
                 np.sum(power),np.sum(self.sumPower)))
-            self.sumPower = alpha*power + (1. - alpha)*self.sumPower 
-            #power = self.sumPower
+            if np.sum(self.sumPower) < 0.001 : 
+                self.sumPower = power 
+            else : 
+                self.sumPower = alpha*power + (1. - alpha)*self.sumPower 
             print("In plotNewSpectrum()  after    : sum(power)={0:e} sum(sumPower)={1:e}".format(
                 np.sum(power),np.sum(self.sumPower)))
             vDoppler, bkgr_sub_pow = self.anaSpectrum(self.sumPower)
@@ -105,7 +112,9 @@ class plotDoppler() :
             yMax = 1.1*np.max(power)
             self.ax.set_ylim([0.,yMax])
             
+        self.txt1 = "Draw count={0:d}".format(self.draw_count)
         self.fig.canvas.draw()
+        self.draw_count += 1 
         plot.pause(0.1)
         return
     
