@@ -80,7 +80,7 @@ class plotDoppler() :
         self.sumPower = np.zeros_like(power) 
         vDoppler, bkgr_sub_pow = self.anaSpectrum(power)
         self.li, = self.ax.plot(vDoppler, bkgr_sub_pow, 'b.')
-        self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),font_size=14)
+        self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
         if not args.sun_mode : self.ax.set_ylim([-5.,50.])
         self.ax.set_title("PSD vs Approach Velocity")
         self.ax.set_xlabel("v (km/s)")
