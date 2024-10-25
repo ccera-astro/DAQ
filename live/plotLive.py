@@ -81,9 +81,9 @@ else :
 
 while True :
     #alpha, ttime, UVW = getAlpha(args,ttime,UVW)
-    alpha = 0.5 
+    alpha = 0.1
     pd.plotNewSpectrum(args,alpha)      
-    time.sleep(1.0)
+    time.sleep(5.0)
     
 
 
