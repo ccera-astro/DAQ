@@ -6,7 +6,7 @@ class plotDoppler() :
 
     def __init__(self, file_name, metadata):
         
-        self.f = open(file_name,"rb")
+        
         self.FFTsize = metadata['fft_size']
         self.metadata = metadata
 
@@ -24,14 +24,16 @@ class plotDoppler() :
         self.velocities = c*(self.freqs/fLine - 1.)
 
         self.gain = 1.   # get gain correction 
+        self.file_name = file_name 
         self.count = 0   # number of spectra
         self.offset = 0   # file read offset
 
     def getData(self) :
         nRead = 0 
         power = np.zeros(self.FFTsize)
+        f = open(self.file_name,"rb")
         while True :
-            data = np.fromfile(self.f,count=self.FFTsize,offset=self.offset,dtype=np.float32)
+            data = np.fromfile(f,count=self.FFTsize,offset=self.offset,dtype=np.float32)
             print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
             if len(data) >= self.FFTsize : 
                 power += data 
