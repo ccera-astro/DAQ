@@ -49,7 +49,7 @@ def getBaseName(args) :
     
     if not args.base_name :
         s = data_dir + "*.json"
-        files = glob.glob(s)
+        files = glob.glob(s).sort() 
         base_name = files[-1].strip(".json")
     else :
         base_name = data_dir + args.base_name
