@@ -53,15 +53,15 @@ class plotDoppler() :
         return background
     
     def anaSpectrum(self,power) :
-        power *= 1.10e5
+        p = 1.10e5*power
         vMin, vMax = -300., 300.
         i1 = np.searchsorted(self.velocities,vMin)
         i2 = np.searchsorted(self.velocities,vMax)
         fs = self.freqs[i1:i2]
         vDoppler = self.velocities[i1:i2]
-        power = power[i1:i2]
-        background = self.fitBackground(vDoppler,power,5,200.)
-        return vDoppler, power-background 
+        p = p[i1:i2]
+        background = self.fitBackground(vDoppler,p,5,200.)
+        return vDoppler, p-background 
 
     def initPlot(self,args):
         print("Enter initPlot()")
