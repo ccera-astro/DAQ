@@ -6,7 +6,6 @@ class plotDoppler() :
 
     def __init__(self, file_name, metadata):
         
-        
         self.FFTsize = metadata['fft_size']
         self.metadata = metadata
 
@@ -42,7 +41,7 @@ class plotDoppler() :
             else :
                 if nRead > 0 : power /= nRead
                 break         
-        print("Exiting getData(): nRead={0:d}".format(nRead))
+        print("Exiting getData(): nRead={0:d} offset={1:d}".format(nRead,self.offset))
         return nRead, power
     
     def fitBackground(self,vDoppler,power,n,vSignal) :
@@ -87,11 +86,15 @@ class plotDoppler() :
         print("Leaving init_plot()")
 
     def plotNewSpectrum(self,args,alpha) :    
-        nRecords, power = self.getData()
-        print("In plotNewSpectrum() nRecords={0:d}".format(nRecords))
-        if nRecords > 0 :
+        nRead, power = self.getData()
+        print("In plotNewSpectrum() nRead={0:d} alpha={1:f}".format(nRead,alpha))
+        if nRead > 0 :
+            print("In plotNewSpectrum() before: sum(power)={0:e} sum(sumPower)={1:e}".format(
+                np.sum(power),np.sum(self.sumPower)))
             self.sumPower = alpha*power + (1. - alpha)*self.sumPower 
             power = self.sumPower
+            print("In plotNewSpectrum()  after: sum(power)={0:e} sum(sumPower)={1:e}".format(
+                np.sum(power),np.sum(self.sumPower)))
             vDoppler, bkgr_sub_pow = self.anaSpectrum(power)
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
