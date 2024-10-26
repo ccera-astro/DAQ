@@ -91,21 +91,18 @@ class plotDoppler() :
         print("Leaving init_plot()")
 
     def plotNewSpectrum(self,args,alpha) :  
-        alpha = 1./(self.draw_count + 1.)  
+        alph = 1./(self.draw_count + 1.)  
         nRead, power = self.getData()
-        print("In plotNewSpectrum() nRead={0:d} alpha={1:f}".format(nRead,alpha))
+        print("In plotNewSpectrum() nRead={0:d} alph={1:f}".format(nRead,alph))
         if nRead > 0 :
             print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
                 np.sum(power),np.sum(self.sumPower)))
-            #if np.sum(self.sumPower) < 0.001 : 
-            #    self.sumPower = power 
-            #else : 
-            self.sumPower = alpha*power + (1. - alpha)*self.sumPower 
+            self.sumPower = alph*power + (1. - alph)*self.sumPower 
             print("In plotNewSpectrum()  after    : sum(power)={0:e} sum(sumPower)={1:e}".format(
                 np.sum(power),np.sum(self.sumPower)))
             vDoppler, bkgr_sub_pow = self.anaSpectrum(self.sumPower)
-            print("In plotNewSpectrum()  after ana: sum(power)={0:e} sum(sumPower)={1:e}".format(
-                np.sum(power),np.sum(self.sumPower)))
+            #print("In plotNewSpectrum()  after ana: sum(power)={0:e} sum(sumPower)={1:e}".format(
+            #    np.sum(power),np.sum(self.sumPower)))
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
 

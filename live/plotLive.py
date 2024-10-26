@@ -18,25 +18,28 @@ def getArgs() :
     parser.add_argument("--noNotch",action="store_true",help="Disable notch filter.")
     return parser.parse_args()
 
-def getAlpha(args,lastTime,lastUVW) :
-    alpha = args.alpha
+def getAzAlt() :
+    import xmlrpc.client as xml
+    rpc = xml.ServerProxy("http://172.22.121.35:9090")
+    try :
+        values = rpc.query_both_axes()
+        alt, az = values[0],values[1]
+        az_rate, alt_rate = rpc.query_az_rate(), rpc.query_el_rate() 
+        return az, alt, az_rate, alt_rate
+    except OSError :
+        print("In plotLive.getAzAlt(): OSError rpc server not found.")
+        return 0., 90., 0., 0. 
+    
+def getAlpha(args,lastUVW) :
     if args.alpha < 1. : return args.alpha, lastTime, lastUVW
-    try:
-        line = open('/tmp/fuse/pos','r').read()
-        now = float(line.split()[0])
-        if now - lastTime > 5. :
-            tht = radians(90. - float(line.split()[1])) 
-            cs, sn = cos(tht), sin(tht)
-            phi = radians(float(line.split()[2]))
-            UVW = [sn*cos(phi), sn*sin(phi), cs]
-            angle = degrees(acos(lastUVW[0]*UVW[0]  + lastUVW[1]*UVW[1] + lastUVW[2]*UVW[2]))
-            if angle > 1. :    # dish is moving
-                return 0.2, now, UVW
-            else :
-                return 0.01, now, UVW
-    except:
-        print("In live21.getAlpha():  /tmp/fuse/pos file not found")
-        return args.alpha, lastTime, lastUVW
+    az, alt, az_rate, alt_rate = getAzAlt()
+    tht = radians(90. - alt) 
+    cs, sn = cos(tht), sin(tht)
+    phi = radians(az)
+    UVW = [sn*cos(phi), sn*sin(phi), cs]
+    angle = degrees(acos(lastUVW[0]*UVW[0]  + lastUVW[1]*UVW[1] + lastUVW[2]*UVW[2]))
+    if angle > 1. : return 0.2, UVW
+    else : return 0.01, UVW
     
 # the default is to display data from the last file on the list
 # which is the one currently being written 
@@ -64,7 +67,7 @@ def getBaseName(args) :
 
 args = getArgs()
 base_name = getBaseName(args)
-ttime, UVW = 0, [0., 0., -1.]
+UVW = [0., 0., -1.]
 
 # read JSON file to determine type of run 
 with open(base_name + ".json") as json_file : metadata = json.load(json_file)
@@ -80,8 +83,7 @@ else :
     exit() 
 
 while True :
-    #alpha, ttime, UVW = getAlpha(args,ttime,UVW)
-    alpha = 0.01
+    alpha, UVW = getAlpha(args,UVW)
     pd.plotNewSpectrum(args,alpha)      
     time.sleep(10.0)
     
