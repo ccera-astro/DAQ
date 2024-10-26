@@ -91,7 +91,7 @@ class plotDoppler() :
         print("Leaving init_plot()")
 
     def plotNewSpectrum(self,args,alpha) :  
-        alph = 1./(self.draw_count + 1.)  
+        alph = max(1./(self.draw_count + 1.),alpha)   
         nRead, power = self.getData()
         print("In plotNewSpectrum() nRead={0:d} alph={1:f}".format(nRead,alph))
         if nRead > 0 :
