@@ -93,7 +93,7 @@ class plotDoppler() :
     def plotNewSpectrum(self,args,alpha) :  
         alph = max(1./(self.draw_count + 1.),alpha)   
         nRead, power = self.getData()
-        print("In plotNewSpectrum() nRead={0:d} alph={1:f}".format(nRead,alph))
+        print("In plotNewSpectrum() nRead={0:d} alpha={1:f} alph={2:f}".format(nRead,alpha,alph))
         if nRead > 0 :
             print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
                 np.sum(power),np.sum(self.sumPower)))
