@@ -35,7 +35,7 @@ class plotDoppler() :
         f = open(self.file_name,"rb")
         while True :
             data = np.fromfile(f,count=self.FFTsize,offset=self.offset,dtype=np.float32)
-            print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
+            #print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
             if len(data) >= self.FFTsize : 
                 power += data 
                 nRead += 1 
@@ -44,8 +44,8 @@ class plotDoppler() :
                 if nRead > 0 : power /= nRead
                 break  
         self.read_count += 1       
-        print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
-            nRead,self.offset,self.read_count))
+        #print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
+        #    nRead,self.offset,self.read_count))
         return nRead, power
     
     def fitBackground(self,vDoppler,power,n,vSignal) :
@@ -80,6 +80,7 @@ class plotDoppler() :
         self.sumPower = np.zeros_like(power) 
         vDoppler, bkgr_sub_pow = self.anaSpectrum(power)
         self.li, = self.ax.plot(vDoppler, bkgr_sub_pow, 'b.')
+        self.draw_count += 1 
         self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
         if not args.sun_mode : self.ax.set_ylim([-5.,50.])
         self.ax.set_title("PSD vs Approach Velocity")
@@ -95,14 +96,12 @@ class plotDoppler() :
         nRead, power = self.getData()
         print("In plotNewSpectrum() nRead={0:d} alpha={1:f} alph={2:f}".format(nRead,alpha,alph))
         if nRead > 0 :
-            print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
-                np.sum(power),np.sum(self.sumPower)))
+            #print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
+            #    np.sum(power),np.sum(self.sumPower)))
             self.sumPower = alph*power + (1. - alph)*self.sumPower 
-            print("In plotNewSpectrum()  after    : sum(power)={0:e} sum(sumPower)={1:e}".format(
+            print("In plotNewSpectrum()  sum(power)={0:e} sum(sumPower)={1:e}".format(
                 np.sum(power),np.sum(self.sumPower)))
             vDoppler, bkgr_sub_pow = self.anaSpectrum(self.sumPower)
-            #print("In plotNewSpectrum()  after ana: sum(power)={0:e} sum(sumPower)={1:e}".format(
-            #    np.sum(power),np.sum(self.sumPower)))
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
 
