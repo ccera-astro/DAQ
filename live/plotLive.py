@@ -31,7 +31,7 @@ def getAzAlt() :
         return 0., 90., 0., 0. 
     
 def getAlpha(args,lastUVW) :
-    if args.alpha < 1. : return args.alpha, lastTime, lastUVW
+    if args.alpha < 1. : return args.alpha, lastUVW
     az, alt, az_rate, alt_rate = getAzAlt()
     tht = radians(90. - alt) 
     cs, sn = cos(tht), sin(tht)
