@@ -84,6 +84,7 @@ else :
 
 while True :
     alpha, UVW = getAlpha(args,UVW)
+    print("In plotLive: alpha={0:f}".format(alpha))
     pd.plotNewSpectrum(args,alpha)      
     time.sleep(10.0)
     
