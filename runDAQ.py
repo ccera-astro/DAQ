@@ -336,11 +336,16 @@ for i in range(args.n_jobs) :
     print("Starting {0:s} flowgraph".format(run_mode))
     tb.start()
 
-    # let the flowgraph run a short time so allow the time stamp file to be written 
-    time.sleep(2)
-    metadata['t_start'] = float(open(file_base_name+"_ts.txt").readline()) 
-    writeMetadata(metadata,file_base_name)
-    print("metadata['t_start]={0} time.time()={1}".format(metadata['t_start'],time.time()))
+    # Read t_start from the time stamp file  
+    while True :
+        try :
+            metadata['t_start'] = float(open(file_base_name+"_ts.txt").readline()) 
+            writeMetadata(metadata,file_base_name)
+            print("metadata['t_start]={0} time.time()={1}".format(metadata['t_start'],time.time()))
+            break 
+        except FileNotFoundError :
+            print("File {0:s} not ready.   Wait and try again.".format(file_base_name+"_ts.txt"))
+            time.sleep(0.1)
 
     # this allows one to gracefully exit with Cntl+C 
     signal.signal(signal.SIGINT, signal_handler)
