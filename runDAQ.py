@@ -337,6 +337,7 @@ for i in range(args.n_jobs) :
     tb.start()
 
     # Read t_start from the time stamp file  
+    time.sleep(2.0)
     while True :
         try :
             metadata['t_start'] = float(open(file_base_name+"_ts.txt").readline()) 
