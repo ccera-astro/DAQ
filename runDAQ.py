@@ -319,15 +319,22 @@ for i in range(args.n_jobs) :
     print("In runDAQ: Run mode={0:s} file_base_name={1:s} {2:d} of {3:d}".format(
     run_mode,file_base_name,i,args.n_jobs))
 
-    try :
-        tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
-            fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
-    except :
-        print("Error instantiating top_block.  Wait 10 seconds and try again.")
-        time.sleep(10.)
-        continue
+    nTries = 0 
+    while True :
+        nTries += 1 
+        try :
+            tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
+                fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
+            break 
+        except :
+            if nTries > 10 : 
+                print("Number of tried exceeds 10 . . . exiting.")
+                exit() 
+            print("Error instantiating top_block.  Wait 10 seconds and try again.")
+            time.sleep(10.)
+            continue
 
-    if printOn : print("Top block instantiated.")
+    if printOn : print("Top block instantiated after {0:d} trial(s).".format(nTries))
 
     metadata = buildMetadata(args.run_mode,args.target,tb)
 
