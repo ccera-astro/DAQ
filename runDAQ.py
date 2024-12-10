@@ -334,7 +334,7 @@ for i in range(args.n_jobs) :
             time.sleep(10.)
             continue
 
-    if printOn : print("Top block instantiated after {0:d} trial(s).".format(nTries))
+    print("Top block instantiated after {0:d} trial(s).".format(nTries))
 
     metadata = buildMetadata(args.run_mode,args.target,tb)
 
