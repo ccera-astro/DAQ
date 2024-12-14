@@ -57,7 +57,7 @@ class plotDoppler() :
         return background
     
     def anaSpectrum(self,power) :
-        p = 1.10e5*power
+        p = 0.25*1.10e5*power
         vMin, vMax = -300., 300.
         i1 = np.searchsorted(self.velocities,vMin)
         i2 = np.searchsorted(self.velocities,vMax)
