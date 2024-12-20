@@ -264,7 +264,7 @@ run_mode = args.run_mode.lower()
 
 f_clock = 1.25e8 
 if run_mode == "pulsar" :
-    f1, f2 = 1.4204e9, 1.4204e9
+    f1, f2 = 1.4204e9-4.0e6, 1.4204e9-4.0e6 
     fft_size = 32
     decimation_factor = 250
     samp_rate = f_clock/6.  
