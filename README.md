@@ -1,5 +1,11 @@
 # DAQ
 
+## Setup
+
+- `git clone https://github.com/ccera-astro/DAQ`
+
+- Create a `./data/` subdirectory in your home directory
+
 ## Data acquisition scripts.    
 The principal modules are `DAQ.py`,
 which is the Python representation of the `DAQ.grc` flowgraph;
@@ -14,6 +20,12 @@ The mode is specified with the `run_mode` parameter.
 The choice of mode determines the default values of other run time parameters,
 such as `f_center, fft_size, samp_rate, decimation_factor`, etc.    These 
 defaults can be overridden by specifying them explicitly at run time.
+
+### Sample command
+
+`> nohup python runDAQ.py -r pulsar --target J0332+5434 --run_type track --run_time 3600 &`
+
+Runs DAQ in background mode using a pulsar parameters for one hour. 
 
 ### `runDAQ.py` parameters 
 - `run_mode`: determines run mode (see above)
