@@ -278,6 +278,11 @@ elif run_mode == "scan" :
     fft_size = 2048
     decimation_factor = 10000
     samp_rate = f_clock/14. 
+elif run_mode == "H1" :         # special request from Marcus 
+    f1, f2 = 1.4204e9, 1.4204e9
+    fft_size = 8192
+    decimation_factor = 800
+    samp_rate = f_clock/100. 
 elif run_mode == "generic" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 2048
