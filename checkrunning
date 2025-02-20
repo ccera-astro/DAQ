@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#
+# Check for relevant PID file
+#
+# Check to see if the PID in that PID file is still running, exit if so
+#
+PIDFILE=$HOME/daily_astro.pid
+if [ -e $PIDFILE ]
+then
+	if ps --pid `cat $PIDFILE` >/dev/null
+	then
+		echo `cat $PIDFILE` already running
+		exit
+	fi
+fi
+
+#
+# If we get here, then we can update the $PIDFILE with our PID
+#
+echo $$ >$PIDFILE
+
+#
+# Run forever
+#
+# Since the individual jobs effectively do a "lmst_wait"
+#  before doing anything, this infinite loop should cause us
+#  to do the appropriate job(s) once a day.
+#
+while true
+do
+    #
+	# Our daily astro jobs
+	#
+	nohup python runDAQ.py -r pulsar --target J0332+5434 --run_type transit --lmst 3.433 --run_time 960 &
+	nohup python runDAQ.py -r h1 --target galaxy --run_type transit --lmst 3.750 --run_time 300 &
+	echo Jobs done, sleeping
+	sleep 40000
+done
