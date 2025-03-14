@@ -32,6 +32,7 @@ do
     #
 	# Our daily astro jobs
 	#
+	python runDAQ.py -r doppler --target galaxy_v2 --run_type transit --lmst 3.233 --run_time 600
 	python runDAQ.py -r pulsar --target J0332+5434 --run_type transit --lmst 3.433 --run_time 960 
 	python runDAQ.py -r h1 --target galaxy --run_type transit --lmst 3.750 --run_time 300 
 	echo Jobs done, sleeping
