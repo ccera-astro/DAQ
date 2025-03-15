@@ -56,7 +56,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             fp = open(self.rxfile, "w")
             #fp.write("%s" % str(value))
             timestump = float(value[0])+float(value[1])
-            #timestump += self.offset
+            timestump += self.offset
             fp.write("%13.7f\n" % timestump)
             fp.close()
         return len(input_items[0])
