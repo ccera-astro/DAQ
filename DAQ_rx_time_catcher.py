@@ -9,6 +9,7 @@ be the parameters. All of them are required to have default values!
 import numpy as np
 from gnuradio import gr
 import pmt
+import time 
 
 
 class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
@@ -58,5 +59,6 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             timestump = float(value[0])+float(value[1])
             timestump += self.offset
             fp.write("%13.7f\n" % timestump)
+            fp.write("{0:.7f}\n".format(time.time()))
             fp.close()
         return len(input_items[0])
