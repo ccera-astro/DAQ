@@ -1007,7 +1007,7 @@ blocks:
     start_time: '-1.0'
     stream_args: ''
     stream_chans: '[]'
-    sync: gps_time
+    sync: pc_clock_next_pps
     time_source0: pps
     time_source1: ''
     time_source2: ''
