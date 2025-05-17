@@ -13,6 +13,8 @@ class NumatoGPIO:
         try:
             self.serial_connection = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             time.sleep(0.1) # Allow time for the connection to establish
+            self.serial_connection.write("gpio iodir 00\r".encode())
+            dmy = self.serial_connection.read(20)
             self.clear_outputs()
             return True
         except serial.SerialException as e:
@@ -35,13 +37,14 @@ class NumatoGPIO:
         if value not in [0, 1]:
             raise ValueError("Value must be 0 or 1")
 
-        command = f"gpio write {output_number} {value}\n".encode('utf-8')
+        command = f"gpio write {output_number} {value}\r".encode('utf-8')
         self.serial_connection.write(command)
         self.serial_connection.flush()
-        time.sleep(0.1)
-        response = self.serial_connection.readline().decode('utf-8').strip()
-        if "ok" not in response.lower():
-            print(f"Error writing to output {output_number}: {response}")
+        # This version doesn't produce an "OK", just another ">" prompt
+        #
+        response = self.serial_connection.read(20).decode('utf-8')
+        if (">" not in response):
+            print ("No '>' in response. Oh well")
     
     def write_all_outputs(self, value):
          if not self.serial_connection or not self.serial_connection.is_open:
@@ -51,13 +54,12 @@ class NumatoGPIO:
             raise ValueError(f"Value must be between 0 and {2**self.num_outputs - 1}")
          
          hex_value = hex(value)[2:].zfill(self.num_outputs // 4) # Ensure correct number of hex digits
-         command = f"gpio writeall {hex_value}\n".encode('utf-8')
+         command = f"gpio writeall {hex_value}\r".encode('utf-8')
          self.serial_connection.write(command)
          self.serial_connection.flush()
-         time.sleep(0.1)
-         response = self.serial_connection.readline().decode('utf-8').strip()
-         if "ok" not in response.lower():
-             print(f"Error writing to all outputs: {response}")
+         response = self.serial_connection.read(20).decode('utf-8')
+         if ">" not in response.lower():
+             print("No '>' in response.  Oh well")
 
     def clear_outputs(self):
         self.write_all_outputs(0)
