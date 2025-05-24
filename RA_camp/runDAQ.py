@@ -127,7 +127,6 @@ def set_filename(file_name) :
     # At beginning of move position system changes output file to /dev/null
     # When the move is complete, the file is set a non-null value
     try :
-        
         if file_name == "/dev/null" :       
             import json
             with open(file_base_name + ".json") as json_file : metadata = json.load(json_file)
@@ -329,7 +328,8 @@ for i in range(args.n_jobs) :
         nTries += 1 
         try :
             tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
-                fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate)
+                fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate,
+                device="type=b200,num_recv_frames=256")
             break 
         except :
             if nTries > 10 : 
