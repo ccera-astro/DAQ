@@ -261,7 +261,7 @@ args = getArgs()
 printOn = args.printOn 
 run_mode = args.run_mode.lower() 
 
-f_clock = 1.25e8 
+f_clock = 3.2e7 
 if run_mode == "pulsar" :
     f1, f2 = 1.4204e9-4.0e6, 1.4204e9-4.0e6 
     fft_size = 32
@@ -271,7 +271,7 @@ elif run_mode == "doppler" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 2048
     decimation_factor = 10000
-    samp_rate = f_clock/30. 
+    samp_rate = f_clock/8. 
 elif run_mode == "scan" :
     f1, f2 = 1.4185e9, 1.4185e9
     fft_size = 2048
