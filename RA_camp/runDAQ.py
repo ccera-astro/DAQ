@@ -329,7 +329,7 @@ for i in range(args.n_jobs) :
         try :
             tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
                 fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
-                device="type=b200,num_recv_frames=256")
+                refclock="internal",pps="internal",device="type=b200,num_recv_frames=256")
             break 
         except :
             if nTries > 10 : 
