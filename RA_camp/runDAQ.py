@@ -309,7 +309,7 @@ if args.lmst != None :
 if args.XMLRPC :
     from xmlrpc.server import SimpleXMLRPCServer
     import threading
-    xmlserver = SimpleXMLRPCServer(('0.0.0.0', 14200), allow_none=True, logRequests=False)
+    xmlserver = SimpleXMLRPCServer(('0.0.0.0', 14300), allow_none=True, logRequests=False)
     xmlserver.register_function(set_filename)
     server_thread = threading.Thread(target=xmlserver.serve_forever)
     server_thread.daemon = True

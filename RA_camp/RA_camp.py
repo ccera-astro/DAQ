@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
 # begin execution here 
 parser = ArgumentParser()
 parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO device")
-parser.add_argument("--xmlurl", type=str, default="http://localhost:8000", help="XMLPORT")
+parser.add_argument("--xmlurl", type=str, default="http://localhost:14300", help="XMLPORT")
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
 args = parser.parse_args()
 
