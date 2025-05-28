@@ -315,7 +315,7 @@ if args.XMLRPC :
     server_thread.daemon = True
     server_thread.start()
 
-# allow for the possibility of a chain of jobs
+#  allow for the possibility of a chain of jobs
 for i in range(args.n_jobs) :
 
     file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
