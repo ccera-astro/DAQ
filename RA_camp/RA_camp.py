@@ -63,8 +63,10 @@ class MainWindow(QMainWindow):
         
         if (args.xmlurl != None):
             self.proxy = xmlrpc.client.ServerProxy(args.xmlurl)
+            print("Before proxy call")
             result = self.proxy.set_filename("Channel_00")
-
+            print("After proxy call result={0}".format(result))
+            
     def update_channel(self) :
         old_chan = self.channel 
         iMax = self.channel + self.n_channels + 1 
