@@ -328,7 +328,7 @@ for i in range(args.n_jobs) :
         nTries += 1 
         try :
             tb = DAQ(base_name=file_base_name, seconds=args.run_time, frequency=f1,  
-                fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate,
+                fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
                 device="type=b200,num_recv_frames=256")
             break 
         except :
