@@ -5,7 +5,7 @@ import LED
 import NumatoGPIO 
 import xmlrpc.client
 from argparse import ArgumentParser 
-from time import sleep, time, strftime, gmtime  
+from time import sleep, time, strftime, gmtime, time   
 from DAQ import DAQ 
 import json 
 
@@ -22,7 +22,7 @@ def buildMetadata(run_mode,target,tb) :
     dict['run_mode'] = run_mode  
     dict['target'] = target 
     dict['run_type'] = 'Transit'
-    dict['t_start'] = time.time()
+    dict['t_start'] = time()
     return dict 
 
 #   write metadata out JSON file 
