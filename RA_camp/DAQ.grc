@@ -176,7 +176,7 @@ blocks:
     label: Device address string
     short_id: ''
     type: str
-    value: '"type=n3xx,product=n310,addr=192.168.20.2"'
+    value: '"type=b200,num_recv_frames=256"'
   states:
     bus_sink: false
     bus_source: false
@@ -261,7 +261,7 @@ blocks:
     label: Master Clock Rate
     short_id: ''
     type: eng_float
-    value: 125e6
+    value: 16e6
   states:
     bus_sink: false
     bus_source: false
