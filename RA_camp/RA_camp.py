@@ -115,12 +115,16 @@ class MainWindow(QMainWindow):
 
         if args.player_piano :
             print("Running in player piano mode.")
+            sleep(5.)
             self.CBs[1].setChecked(True)
             self.LEDs[1].set_on(True)
             self.start_clicked() 
         
     def update_channel(self) :
-        if (time() - self.start_time) > self.run_time :
+        
+        elapsed_time = time() - self.start_time
+        print("Update channel: elapsed_time={0:.2f} run_time={1:d}".format(elapsed_time,self.run_time))
+        if elapsed_time > self.run_time :
             print("Run time exceeded . . . stopping") 
             self.stop_clicked() 
             return 
