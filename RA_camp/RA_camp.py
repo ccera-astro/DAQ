@@ -3,7 +3,6 @@ from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QFont
 import LED 
 import NumatoGPIO 
-import xmlrpc.client
 from argparse import ArgumentParser 
 from time import sleep, time, strftime, gmtime, time   
 from DAQ import DAQ 
@@ -112,12 +111,6 @@ class MainWindow(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_channel)
         
-        if (args.xmlurl != None):
-            self.proxy = xmlrpc.client.ServerProxy(args.xmlurl)
-            print("Before proxy call")
-            result = self.proxy.set_filename("Channel_00")
-            print("After proxy call result={0}".format(result))
-            
     def update_channel(self) :
         old_chan = self.channel 
         iMax = self.channel + self.n_channels + 1 
