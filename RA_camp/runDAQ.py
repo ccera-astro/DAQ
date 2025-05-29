@@ -325,7 +325,7 @@ if args.XMLRPC :
 for i in range(args.n_jobs) :
 
     file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
-    file_base_name = "/dev/null" 
+    file_base_name = args.dir + "dummy" 
 
     print("In runDAQ: Run mode={0:s} file_base_name={1:s} {2:d} of {3:d}".format(
     run_mode,file_base_name,i,args.n_jobs))
