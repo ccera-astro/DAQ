@@ -33,15 +33,9 @@ parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO dev
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
 parser.add_argument("--run_time",type=int,default=120,help="run time in seconds")
 parser.add_argument("--dwell_time",type=int,default=10,help="dwell time in seconds")
-parser.add_argument("-p","--player_piano",action="store_true",help="Player piano mode")
 args = parser.parse_args()
 
 GPIO = NumatoGPIO.NumatoGPIO(args.device,timeout=args.timeout)
-#app = QApplication([])
-#window = MainWindow(args,GPIO)
-#window.show()
-#app.exec_()
-# Setup DAQ
 f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, 2048, 10000
 samp_rate = f_clock/4 
 dir_name = "/home/student/data/RA_camp/"
@@ -78,7 +72,7 @@ print("top_block started")
 while True :
     sleep(args.dwell_time)
     elapsed_time = time() - start_time
-    print("Elapsed time = {0:.2f} run_time={1:.2f}".format(elapsed_time,args.run_time)) 
+    print("Elapsed time = {0:.2f} Time remaining={1:.2f}".format(elapsed_time,args.run_time-elapsed_time)) 
     if elapsed_time > args.run_time :
         print("Total time expired ... exiting")
         break
