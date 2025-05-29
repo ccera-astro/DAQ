@@ -261,7 +261,7 @@ blocks:
     label: Master Clock Rate
     short_id: ''
     type: eng_float
-    value: 16e6
+    value: 20e6
   states:
     bus_sink: false
     bus_source: false
@@ -329,7 +329,7 @@ blocks:
     label: Sample Rate
     short_id: ''
     type: eng_float
-    value: 4e6
+    value: 5e6
   states:
     bus_sink: false
     bus_source: false
