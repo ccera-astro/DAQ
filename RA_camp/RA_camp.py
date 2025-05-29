@@ -5,15 +5,65 @@ import LED
 import NumatoGPIO 
 import xmlrpc.client
 from argparse import ArgumentParser 
-from time import sleep 
+from time import sleep, time 
+from DAQ import DAQ 
+import json 
 
+#   build meta data dictionary 
+def buildMetadata(run_mode,target,tb) :
+    dict = {}
+    dict['freq'] = tb.get_frequency() 
+    dict['srate'] = srate = tb.get_samp_rate() 
+    dict['fft_size'] = fft_size = tb.get_fft_size()
+    N = tb.get_decimation_factor() 
+    dict['decimation_factor'] = N 
+    dict['t_sample'] = 1./(srate/fft_size/N)
+    dict['n_chans'] = 1
+    dict['run_mode'] = run_mode  
+    dict['target'] = target 
+    dict['run_type'] = 'Transit'
+    dict['t_start'] = time.time()
+    return dict 
+
+#   write metadata out JSON file 
+def writeMetadata(metadata,file_base_name) :
+    file_name = file_base_name + '.json'
+    with open(file_name, 'w') as fp :
+        json.dump(metadata, fp)
+    return
+    
 class MainWindow(QMainWindow):
     def __init__(self,args,GPIO):
         super().__init__()
         self.setWindowTitle("MUX Controller")
+
+        # Setup DAQ
+        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, 2024, 10000
+        samp_rate = f_clock/4 
+        self.dir_name = "/home/student/data/RA_camp/"
+        nTries = 0 
+        while nTries < 10 :
+            nTries += 1 
+            try :
+                self.file_base_name = self.dir_name + "Ch00_" + time.strftime("%Y-%m-%d-%H%M%S", time.gmtime())
+                self.tb = DAQ(base_name=self.file_base_name, seconds=1000000, frequency=f1,  
+                    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
+                    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
+                break 
+            except: 
+                print("Error instantiating top_block.  Wait 10 seconds and try again.")
+                sleep(10.)
+                continue
+
+        print("Top block instantiated after {0:d} trial(s).".format(nTries))
+        self.metadata = buildMetadata("doppler","RA_camp",self.tb)
+        print("Metadata built.") 
+
+        # Set up GPIO 
         self.GPIO = GPIO 
         self.GPIO_good = GPIO.connect() 
         if not self.GPIO_good : print("***ERROR GPIO serial connection failed.****")
+
         self.n_channels = 8 
         self.channel = 0
         layout = QGridLayout()
@@ -22,7 +72,6 @@ class MainWindow(QMainWindow):
             self.LEDs.append(LED.LED(color="red",on=False))  
             self.CBs.append(QCheckBox("Channel {0:d}".format(i+1)))
             self.CBs[i].setFont(QFont("Arial",12))
-            #self.CBs[i].stateChanged.connect(self.checkbox_changed)
             layout.addWidget(self.LEDs[i],i,0)  
             layout.addWidget(self.CBs[i],i,1)
 
@@ -81,30 +130,37 @@ class MainWindow(QMainWindow):
         if new_chan == old_chan : return 
 
         # set file name to null, change MUX, and then set file name to new channel 
-        if (args.xmlurl != None): result = self.proxy.set_filename("/dev/null")
+        self.tb.set_base_name("/dev/null")
+        writeMetadata(self.metadata,self.file_base_name)
         sleep(1.)
         self.LEDs[self.channel].set_on(False)
         self.channel = new_chan 
         self.LEDs[self.channel].set_on(True)
-        
         #update channel select hardware
         if self.GPIO_good : GPIO.write_all_outputs(self.channel)
+        sleep(1.)
+        ch = "Ch{0:2d}_".format(self.channel)
+        self.file_base_name = self.dir_name + ch + time.strftime("%Y-%m-%d-%H%M%S", time.gmtime())
+        self.metadata['t_start'] = time.time() 
 
-        sleep(1.0)
-        if (args.xmlurl != None): result = self.proxy.set_filename("Channel_{0:02d}".format(self.channel))
         return 
-
 
     def start_clicked(self) :
         self.timer.start(self.dwell_time_ms) 
         self.RunLabel.setText("Running")
         self.RunLabel.setStyleSheet("color: green;")
+        writeMetadata(self.metadata,self.file_base_name)
+        self.tb.start() 
+        self.tb.wait() 
+        print("In start_clicked(): top_block running")
         return
     
     def stop_clicked(self) :
         self.timer.stop() 
         self.RunLabel.setText("Stopped")
         self.RunLabel.setStyleSheet("color: red;")
+        self.tb.blocks_head_0.set_length(0)
+        writeMetadata(self.metadata,self.file_base_name)
         return
     
     def dwell_time_changed(self) :
