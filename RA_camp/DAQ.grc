@@ -278,7 +278,7 @@ blocks:
     label: PPS Clock SOurce
     short_id: ''
     type: str
-    value: gpsdo
+    value: internal
   states:
     bus_sink: false
     bus_source: false
@@ -295,7 +295,7 @@ blocks:
     label: Reference clock type
     short_id: ''
     type: str
-    value: gpsdo
+    value: internal
   states:
     bus_sink: false
     bus_source: false
