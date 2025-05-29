@@ -125,7 +125,7 @@ class MainWindow(QMainWindow):
         if new_chan == old_chan : return 
 
         # set file name to null, change MUX, and then set file name to new channel 
-        self.tb.set_base_name("/dev/null")
+        self.tb.set_base_name("temp")
         writeMetadata(self.metadata,self.file_base_name)
         sleep(1.)
         self.LEDs[self.channel].set_on(False)
@@ -136,7 +136,7 @@ class MainWindow(QMainWindow):
         sleep(1.)
         ch = "Ch{0:2d}_".format(self.channel)
         self.file_base_name = self.dir_name + ch + strftime("%Y-%m-%d-%H%M%S", gmtime())
-        self.metadata['t_start'] = time.time() 
+        self.metadata['t_start'] = time() 
 
         return 
 
@@ -168,7 +168,6 @@ class MainWindow(QMainWindow):
 # begin execution here 
 parser = ArgumentParser()
 parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO device")
-parser.add_argument("--xmlurl", type=str, default="http://localhost:14300", help="XMLPORT")
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
 args = parser.parse_args()
 
