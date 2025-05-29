@@ -117,8 +117,13 @@ class MainWindow(QMainWindow):
             print("Running in player piano mode.")
             sleep(5.)
             self.CBs[1].setChecked(True)
-            self.LEDs[1].set_on(True)
-            self.start_clicked() 
+            self.timer.start(self.dwell_time_ms) 
+            self.RunLabel.setText("Running")
+            self.RunLabel.setStyleSheet("color: green;")
+            writeMetadata(self.metadata,self.file_base_name)
+            self.tb.start() 
+            self.tb.wait() 
+            print("top_block running")
         
     def update_channel(self) :
         
