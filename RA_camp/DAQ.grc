@@ -329,7 +329,7 @@ blocks:
     label: Sample Rate
     short_id: ''
     type: eng_float
-    value: 1.25e7
+    value: 4e6
   states:
     bus_sink: false
     bus_source: false
