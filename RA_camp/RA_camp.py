@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
                 #    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
                 #    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
                 print("Before instantiating top_block: file={0:s}".format(self.file_base_name))
-                self.tb = DAQ(base_name=self.file_base_name, seconds=20)
+                self.tb = DAQ(base_name=self.file_base_name, seconds=1000000)
                 break 
             except: 
                 print("Error instantiating top_block.  Wait 10 seconds and try again.")
@@ -134,10 +134,9 @@ class MainWindow(QMainWindow):
         #update channel select hardware
         if self.GPIO_good : GPIO.write_all_outputs(self.channel)
         sleep(1.)
-        ch = "Ch{0:2d}_".format(self.channel)
+        ch = "Ch{0:02d}_".format(self.channel)
         self.file_base_name = self.dir_name + ch + strftime("%Y-%m-%d-%H%M%S", gmtime())
         self.metadata['t_start'] = time() 
-
         return 
 
     def start_clicked(self) :
@@ -155,7 +154,9 @@ class MainWindow(QMainWindow):
         self.RunLabel.setText("Stopped")
         self.RunLabel.setStyleSheet("color: red;")
         self.tb.blocks_head_0.set_length(0)
+        print("In stop_clicked(): top_block stopped")
         writeMetadata(self.metadata,self.file_base_name)
+        print("In stop_clicked(): top_block metadata written")
         return
     
     def dwell_time_changed(self) :
