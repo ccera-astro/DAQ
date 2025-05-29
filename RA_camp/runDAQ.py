@@ -325,7 +325,6 @@ if args.XMLRPC :
 for i in range(args.n_jobs) :
 
     file_base_name = args.dir + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
-    file_base_name = "/dev/null"
 
     print("In runDAQ: Run mode={0:s} file_base_name={1:s} {2:d} of {3:d}".format(
     run_mode,file_base_name,i,args.n_jobs))
@@ -348,16 +347,16 @@ for i in range(args.n_jobs) :
 
     print("Top block instantiated after {0:d} trial(s).".format(nTries))
 
-    #metadata = buildMetadata(args.run_mode,args.target,tb)
+    metadata = buildMetadata(args.run_mode,args.target,tb)
 
-    #if printOn : print("Metadata built.  metadata={0:s}".format(str(metadata)))
+    if printOn : print("Metadata built.  metadata={0:s}".format(str(metadata)))
 
     print("Starting {0:s} flowgraph".format(run_mode))
     tb.start()
 
     # Read t_start from the time stamp file  
-    #time.sleep(2.0)
-    while False :
+    time.sleep(2.0)
+    while True :
         try :
             metadata['t_start'] = float(open(file_base_name+"_ts.txt").readline()) 
             writeMetadata(metadata,file_base_name)
