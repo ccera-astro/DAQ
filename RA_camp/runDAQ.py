@@ -36,6 +36,10 @@ def getArgs() :
     return parser.parse_args()
 
 def getAzAlt() :
+    if True :
+        print("***** getAzAlt not yet implemented returning dummy values **** ")
+        return 0., 90., 0., 0. 
+    
     import xmlrpc.client as xml
     rpc = xml.ServerProxy("http://172.22.121.35:9090")
     try :
@@ -139,7 +143,7 @@ def set_filename(file_name) :
             print("   Changing file_name to {0:s}".format(file_name))
             metadata = buildMetadata('doppler','RA_camp',tb)
             metadata['t_start'] = time.time()    # this will not be as precise as time_catcher() but should be OK
-            file_base_name = args.dir + file_name + "/" + time.strftime("%Y-%m-%d-%H%M", time.gmtime())
+            file_base_name = args.dir + file_name + "_" + time.strftime("%Y-%m-%d-%H%M-%S", time.gmtime())
             print("Before writeMetaData")
             writeMetadata(metadata,file_base_name)
             print("Before t.set_base_name")
