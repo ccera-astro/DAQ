@@ -42,6 +42,8 @@ class MainWindow(QMainWindow):
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", gmtime())
+        self.run_time = args.run_time 
+        self.start_time = time() 
         while nTries < 10 :
             nTries += 1 
             try :
@@ -49,7 +51,7 @@ class MainWindow(QMainWindow):
                 #    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
                 #    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
                 print("Before instantiating top_block: file={0:s}".format(self.file_base_name))
-                self.tb = DAQ(base_name=self.file_base_name, seconds=1000000)
+                self.tb = DAQ(base_name=self.file_base_name, seconds=self.run_time)
                 break 
             except: 
                 print("Error instantiating top_block.  Wait 10 seconds and try again.")
@@ -110,8 +112,19 @@ class MainWindow(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_channel)
+
+        if args.player_piano :
+            print("Running in player piano mode.")
+            self.CBs[1].setChecked(True)
+            self.LEDs[1].set_on(True)
+            self.start_clicked() 
         
     def update_channel(self) :
+        if (time() - self.start_time) > self.run_time :
+            print("Run time exceeded . . . stopping") 
+            self.stop_clicked() 
+            return 
+            
         old_chan = self.channel 
         iMax = self.channel + self.n_channels + 1 
         new_chan = 0 
@@ -170,6 +183,8 @@ class MainWindow(QMainWindow):
 parser = ArgumentParser()
 parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO device")
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
+parser.add_argument("--run_time",type=int,default=120,help="run time in seconds")
+parser.add_argument("-p","--player_piano",action="store_true",help="Player piano mode")
 args = parser.parse_args()
 
 GPIO = NumatoGPIO.NumatoGPIO(args.device,timeout=args.timeout)
