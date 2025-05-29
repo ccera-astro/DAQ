@@ -5,7 +5,7 @@ import LED
 import NumatoGPIO 
 import xmlrpc.client
 from argparse import ArgumentParser 
-from time import sleep, time 
+from time import sleep, time, strftime 
 from DAQ import DAQ 
 import json 
 
@@ -38,17 +38,19 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("MUX Controller")
 
         # Setup DAQ
-        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, 2024, 10000
+        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, 2048, 10000
         samp_rate = f_clock/4 
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         while nTries < 10 :
             nTries += 1 
             try :
-                self.file_base_name = self.dir_name + "Ch00_" + time.strftime("%Y-%m-%d-%H%M%S", time.gmtime())
-                self.tb = DAQ(base_name=self.file_base_name, seconds=1000000, frequency=f1,  
-                    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
-                    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
+                self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", time.gmtime())
+                #self.tb = DAQ(base_name=self.file_base_name, seconds=1000000, frequency=f1,  
+                #    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
+                #    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
+                print("Before instantiating top_block: file={0:s}".format(self.file_base_name))
+                self.tb = DAQ(base_name=self.file_base_name, seconds=20)
                 break 
             except: 
                 print("Error instantiating top_block.  Wait 10 seconds and try again.")
@@ -140,7 +142,7 @@ class MainWindow(QMainWindow):
         if self.GPIO_good : GPIO.write_all_outputs(self.channel)
         sleep(1.)
         ch = "Ch{0:2d}_".format(self.channel)
-        self.file_base_name = self.dir_name + ch + time.strftime("%Y-%m-%d-%H%M%S", time.gmtime())
+        self.file_base_name = self.dir_name + ch + strftime("%Y-%m-%d-%H%M%S", time.gmtime())
         self.metadata['t_start'] = time.time() 
 
         return 
