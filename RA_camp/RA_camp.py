@@ -116,7 +116,7 @@ class MainWindow(QMainWindow):
     def update_channel(self) :
         
         elapsed_time = time() - self.start_time
-        print("Update channel: elapsed_time={0:.2f} time remaining={1:d}".format(
+        print("Update channel: elapsed_time={0:.2f} time remaining={1:.2f}".format(
             elapsed_time,self.run_time-elapsed_time))
         if elapsed_time > self.run_time :
             print("Run time exceeded . . . stopping") 
