@@ -158,6 +158,7 @@ class MainWindow(QMainWindow):
         sleep(1.)
         ch = "Ch{0:02d}_".format(self.channel)
         self.file_base_name = self.dir_name + ch + strftime("%Y-%m-%d-%H%M%S", gmtime())
+        self.tb.set_base_name(self.file_base_name)
         self.metadata['t_start'] = time() 
         return 
 
