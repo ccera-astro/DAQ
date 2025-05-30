@@ -162,10 +162,12 @@ class MainWindow(QMainWindow):
         return 
 
     def start_clicked(self) :
+        print("Enter start_clicked()")
         self.timer.start(self.dwell_time_ms) 
         self.RunLabel.setText("Running")
         self.RunLabel.setStyleSheet("color: green;")
         writeMetadata(self.metadata,self.file_base_name)
+        print("In start_clicked(): metadata written")
         self.tb.start() 
         self.tb.wait() 
         print("In start_clicked(): top_block running")
