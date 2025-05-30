@@ -169,7 +169,7 @@ class MainWindow(QMainWindow):
         self.RunLabel.setStyleSheet("color: red;")
         #self.tb.blocks_head_0.set_length(0)
         self.tb.stop()
-        self.wait() 
+        self.tb.wait() 
         print("In stop_clicked(): top_block stopped")
         writeMetadata(self.metadata,self.file_base_name)
         print("In stop_clicked(): top_block metadata written")
