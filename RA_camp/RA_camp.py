@@ -101,7 +101,7 @@ class MainWindow(QMainWindow):
         self.dwell_time_spinner.setRange(0.0, 600.0)
         self.dwell_time_spinner.setSingleStep(1.)
         self.dwell_time_spinner.setDecimals(1)
-        self.dwell_time_spinner.setValue(10.)
+        self.dwell_time_spinner.setValue(args.dwell_time)
         self.dwell_time_ms = int(1000*self.dwell_time_spinner.value())
         self.dwell_time_spinner.valueChanged.connect(self.dwell_time_changed)
         layout.addWidget(self.dwell_time_spinner,4,2)
@@ -113,22 +113,11 @@ class MainWindow(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_channel)
 
-        if args.player_piano :
-            print("Running in player piano mode.")
-            sleep(5.)
-            self.CBs[1].setChecked(True)
-            self.timer.start(self.dwell_time_ms) 
-            self.RunLabel.setText("Running")
-            self.RunLabel.setStyleSheet("color: green;")
-            writeMetadata(self.metadata,self.file_base_name)
-            self.tb.start() 
-            self.tb.wait() 
-            print("top_block running")
-        
     def update_channel(self) :
         
         elapsed_time = time() - self.start_time
-        print("Update channel: elapsed_time={0:.2f} run_time={1:d}".format(elapsed_time,self.run_time))
+        print("Update channel: elapsed_time={0:.2f} time remaining={1:d}".format(
+            elapsed_time,self.run_time-elapsed_time))
         if elapsed_time > self.run_time :
             print("Run time exceeded . . . stopping") 
             self.stop_clicked() 
@@ -195,8 +184,8 @@ class MainWindow(QMainWindow):
 parser = ArgumentParser()
 parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO device")
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
-parser.add_argument("--run_time",type=int,default=120,help="run time in seconds")
-parser.add_argument("-p","--player_piano",action="store_true",help="Player piano mode")
+parser.add_argument("--run_time",type=int,default=100000,help="run time in seconds")
+parser.add_argument("--dwell_time",type=int,default=60,help="run time in seconds")
 args = parser.parse_args()
 
 GPIO = NumatoGPIO.NumatoGPIO(args.device,timeout=args.timeout)
