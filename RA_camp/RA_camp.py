@@ -169,7 +169,7 @@ class MainWindow(QMainWindow):
         writeMetadata(self.metadata,self.file_base_name)
         print("In start_clicked(): metadata written")
         self.tb.start() 
-        self.tb.wait() 
+        #self.tb.wait() 
         print("In start_clicked(): top_block running")
         return
     
