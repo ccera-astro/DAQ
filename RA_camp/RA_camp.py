@@ -37,13 +37,13 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("MUX Controller")
 
         # Setup DAQ
-        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, 2048, 10000
+        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, args.fft_size, int((2048/args.fft_size)*10000)
         samp_rate = f_clock/4 
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", gmtime())
         self.run_time = args.run_time 
-        self.start_time = time() 
+        
         while nTries < 10 :
             nTries += 1 
             try :
@@ -51,7 +51,8 @@ class MainWindow(QMainWindow):
                 #    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
                 #    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
                 print("Before instantiating top_block: file={0:s}".format(self.file_base_name))
-                self.tb = DAQ(base_name=self.file_base_name, seconds=self.run_time)
+                self.tb = DAQ(base_name=self.file_base_name, seconds=self.run_time, fft_size=fft_size,
+                              decimation_factor=decimation_factor)
                 break 
             except: 
                 print("Error instantiating top_block.  Wait 10 seconds and try again.")
@@ -60,6 +61,7 @@ class MainWindow(QMainWindow):
 
         print("Top block instantiated after {0:d} trial(s).".format(nTries))
         self.metadata = buildMetadata("doppler","RA_camp",self.tb)
+        self.start_time = time() 
         print("Metadata built.") 
 
         # Set up GPIO 
@@ -188,6 +190,8 @@ parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO dev
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
 parser.add_argument("--run_time",type=int,default=100000,help="run time in seconds")
 parser.add_argument("--dwell_time",type=int,default=60,help="run time in seconds")
+parser.add_argument("--fft_size",type=int,default=2048,help="fft_size")
+
 args = parser.parse_args()
 
 GPIO = NumatoGPIO.NumatoGPIO(args.device,timeout=args.timeout)
