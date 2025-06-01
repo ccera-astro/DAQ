@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("MUX Controller")
 
         # Setup DAQ
-        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, args.fft_size, int((2048/args.fft_size)*10000)
+        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, args.fft_size, 10000
         samp_rate = f_clock/4 
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
