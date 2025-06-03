@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 from time import sleep, time, strftime, gmtime, time   
 from DAQ import DAQ 
 import json 
+import numpy as np 
 
 #   build meta data dictionary 
 def buildMetadata(run_mode,target,tb) :
@@ -30,6 +31,30 @@ def writeMetadata(metadata,file_base_name) :
     with open(file_name, 'w') as fp :
         json.dump(metadata, fp)
     return
+
+def getData(file,fft_size) :
+    print("Reading from file: {0:s}".format(file))
+    vals = np.fromfile(file, dtype=np.float32)
+    cols = fft_size
+    rows = int(len(vals)/fft_size)
+    vals = np.reshape(vals, (rows,cols))   
+    return vals, rows, cols
+
+# convert .raw data format to .sum data format by summing over columns in the 
+# data array to make a time series of single values 
+def makeSumFile(base_name, metadata) :
+
+    with open(base_name + ".json") as json_file : metadata = json.load(json_file)
+
+    fft_size = metadata['fft_size']
+
+    chan = 1 
+    file = base_name + "_{0:d}.raw".format(chan)
+    data, nRows, nCols = getData(file,fft_size)
+    print("Read {0:d} {1:d}-channel spectra from {2:s}".format(nRows,nCols,file))
+    power = np.sum(data,1)
+    file_out = base_name + "_{0:d}.sum".format(chan)
+    with open(file_out,'w') as file : power.tofile(file)
     
 class MainWindow(QMainWindow):
     def __init__(self,args,GPIO):
@@ -37,8 +62,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("MUX Controller")
 
         # Setup DAQ
-        f_clock, f1, fft_size, decimation_factor = 1.6e7, 1.4204e9, args.fft_size, 10000
+        f_clock, f1, fft_size = 1.6e7, 1.4204e9, args.fft_size
         samp_rate = f_clock/4 
+        decimation_factor = samp_rate/fft_size 
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", gmtime())
@@ -140,13 +166,14 @@ class MainWindow(QMainWindow):
         # set file name to null, change MUX, and then set file name to new channel 
         self.tb.set_base_name("temp")
         writeMetadata(self.metadata,self.file_base_name)
+        makeSumFile(self.file_base_name, self.metadata)
         sleep(1.)
         self.LEDs[self.channel].set_on(False)
         self.channel = new_chan 
         self.LEDs[self.channel].set_on(True)
         #update channel select hardware
         if self.GPIO_good : GPIO.write_all_outputs(self.channel)
-        sleep(1.)
+        sleep(2.)
         ch = "Ch{0:02d}_".format(self.channel)
         self.file_base_name = self.dir_name + ch + strftime("%Y-%m-%d-%H%M%S", gmtime())
         self.tb.set_base_name(self.file_base_name)
@@ -190,7 +217,7 @@ parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO dev
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
 parser.add_argument("--run_time",type=int,default=100000,help="run time in seconds")
 parser.add_argument("--dwell_time",type=int,default=60,help="run time in seconds")
-parser.add_argument("--fft_size",type=int,default=2048,help="fft_size")
+parser.add_argument("--fft_size",type=int,default=8192,help="fft_size")
 
 args = parser.parse_args()
 
