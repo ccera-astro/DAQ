@@ -53,7 +53,7 @@ def makeSumFile(base_name, metadata) :
     data, nRows, nCols = getData(file,fft_size)
     print("Read {0:d} {1:d}-channel spectra from {2:s}".format(nRows,nCols,file))
     power = np.sum(data,1)
-    print("len(data)={0:d} len(power)={1:d} data.shape={2}".format(len(data)),len(power),data.shape) 
+    print("len(data)={0:d} len(power)={1:d} data.shape={2}".format(len(data),len(power),data.shape)) 
     file_out = base_name + "_{0:d}.sum".format(chan)
     with open(file_out,'w') as file : power.tofile(file)
     
