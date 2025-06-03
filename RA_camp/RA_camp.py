@@ -40,22 +40,23 @@ def getData(file,fft_size) :
     vals = np.reshape(vals, (rows,cols))   
     return vals, rows, cols
 
-# convert .raw data format to .sum data format by summing over columns in the 
-# data array to make a time series of single values 
-def makeSumFile(base_name, metadata) :
-
-    with open(base_name + ".json") as json_file : metadata = json.load(json_file)
-
+def makeAverageFile(base_name, metadata) :
     fft_size = metadata['fft_size']
 
-    chan = 1 
-    file = base_name + "_{0:d}.raw".format(chan)
-    data, nRows, nCols = getData(file,fft_size)
-    print("Read {0:d} {1:d}-channel spectra from {2:s}".format(nRows,nCols,file))
-    power = np.sum(data,1)
-    print("len(data)={0:d} len(power)={1:d} data.shape={2}".format(len(data),len(power),data.shape)) 
-    file_out = base_name + "_{0:d}.sum".format(chan)
-    with open(file_out,'w') as file : power.tofile(file)
+    for chan in [1] :
+        data, rows, cols = getData(base_name + "_{0:d}.raw".format(chan),fft_size)
+        print("After getData Chan {0:d}: rows={1:d} cols={2:d}".format(chan,rows,cols))
+
+        # reshape array into a series of row 
+        data = np.reshape(data, (rows,cols))   
+        print("len(data[0])={0:d}".format(len(data[0])))
+
+        avg_data = np.mean(data,0)
+        print("len(avg_data)={0:d}".format(len(avg_data)))
+
+        avg_data.tofile(base_name + "_{0:d}.avg".format(chan))
+
+
     
 class MainWindow(QMainWindow):
     def __init__(self,args,GPIO):
@@ -167,7 +168,7 @@ class MainWindow(QMainWindow):
         # set file name to null, change MUX, and then set file name to new channel 
         self.tb.set_base_name("temp")
         writeMetadata(self.metadata,self.file_base_name)
-        makeSumFile(self.file_base_name, self.metadata)
+        makeAverageFile(self.file_base_name, self.metadata)
         sleep(1.)
         self.LEDs[self.channel].set_on(False)
         self.channel = new_chan 
