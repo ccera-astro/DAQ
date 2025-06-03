@@ -8,6 +8,7 @@ from time import sleep, time, strftime, gmtime, time
 from DAQ import DAQ 
 import json 
 import numpy as np 
+import os 
 
 #   build meta data dictionary 
 def buildMetadata(run_mode,target,tb) :
@@ -55,7 +56,7 @@ def makeAverageFile(base_name, metadata) :
         print("len(avg_data)={0:d}".format(len(avg_data)))
 
         avg_data.tofile(base_name + "_{0:d}.avg".format(chan))
-
+        os.remove(base_name + "_{0:d}.raw".format(chan))
 
     
 class MainWindow(QMainWindow):
