@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         # Setup DAQ
         f_clock, f1, fft_size = 1.6e7, 1.4204e9, args.fft_size
         samp_rate = f_clock/4 
-        decimation_factor = samp_rate/fft_size 
+        decimation_factor = int(samp_rate/fft_size)  
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", gmtime())
