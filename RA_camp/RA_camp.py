@@ -66,7 +66,8 @@ class MainWindow(QMainWindow):
 
         # Setup DAQ
         f_clock, f1, fft_size = 1.6e7, 1.4204e9, args.fft_size
-        samp_rate = f_clock/4 
+        #samp_rate = f_clock/4 
+        samp_rate = f_clock/8 
         decimation_factor = int(samp_rate/fft_size)  
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
