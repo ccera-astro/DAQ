@@ -69,7 +69,8 @@ class MainWindow(QMainWindow):
         samp_rate = f_clock/4 
         #samp_rate = f_clock/32
         decimation_factor = int(samp_rate/fft_size)  
-        if decimation_factor % 2 != 0 : decimation_factor += 1 
+        decimation_factor = 2000
+        print("f_clock={0:f} samp_rate={1:f} decimation_factor={2:f}".format(f_clock,samp_rate,decimation_factor)) 
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", gmtime())
@@ -82,7 +83,7 @@ class MainWindow(QMainWindow):
                 #    fft_size=fft_size, decimation_factor=decimation_factor, samp_rate=samp_rate, mclock=f_clock,
                 #    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
                 print("Before instantiating top_block: file={0:s}".format(self.file_base_name))
-                self.tb = DAQ(base_name=self.file_base_name, seconds=self.run_time, fft_size=fft_size,
+                self.tb = DAQ(base_name=self.file_base_name, seconds=self.run_time, fft_size=fft_size, mclock=f_clock,
                               samp_rate=samp_rate,subdev="A:A A:B",decimation_factor=decimation_factor)
                 break 
             except: 
