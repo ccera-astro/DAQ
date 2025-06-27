@@ -44,7 +44,7 @@ def getData(file,fft_size) :
 def makeAverageFile(base_name, metadata) :
     fft_size = metadata['fft_size']
 
-    for chan in [1] :
+    for chan in [1,2] :
         data, rows, cols = getData(base_name + "_{0:d}.raw".format(chan),fft_size)
         print("After getData Chan {0:d}: rows={1:d} cols={2:d}".format(chan,rows,cols))
 
