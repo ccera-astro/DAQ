@@ -69,6 +69,7 @@ class MainWindow(QMainWindow):
         samp_rate = f_clock/4 
         #samp_rate = f_clock/32
         decimation_factor = int(samp_rate/fft_size)  
+        if decimation_factor % 2 != 0 : decimation_factor += 1 
         self.dir_name = "/home/student/data/RA_camp/"
         nTries = 0 
         self.file_base_name = self.dir_name + "Ch00_" + strftime("%Y-%m-%d-%H%M%S", gmtime())
