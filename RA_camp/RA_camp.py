@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
                 #    refclock="internal",pps="internal",subdev="A:A A:B",device="type=b200,num_recv_frames=256")
                 print("Before instantiating top_block: file={0:s}".format(self.file_base_name))
                 self.tb = DAQ(base_name=self.file_base_name, seconds=self.run_time, fft_size=fft_size,
-                              decimation_factor=decimation_factor)
+                              subdev="A:A A:B",decimation_factor=decimation_factor)
                 break 
             except: 
                 print("Error instantiating top_block.  Wait 10 seconds and try again.")
