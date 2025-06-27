@@ -218,7 +218,7 @@ class MainWindow(QMainWindow):
 parser = ArgumentParser()
 parser.add_argument("--device", type=str, default="/dev/ttyACM0", help="GPIO device")
 parser.add_argument("--timeout", type=float, default=0.050, help="Read timeout")
-parser.add_argument("--run_time",type=int,default=100000,help="run time in seconds")
+parser.add_argument("--run_time",type=int,default=1000000,help="run time in seconds")
 parser.add_argument("--dwell_time",type=int,default=60,help="run time in seconds")
 parser.add_argument("--fft_size",type=int,default=8192,help="fft_size")
 
