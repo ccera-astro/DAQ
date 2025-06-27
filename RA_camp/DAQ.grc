@@ -75,7 +75,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1144, 68.0]
+    coordinate: [992, 68.0]
+    rotation: 0
+    state: true
+- name: blocks_complex_to_mag_squared_0_0
+  id: blocks_complex_to_mag_squared
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1000, 252.0]
     rotation: 0
     state: true
 - name: blocks_file_sink_0
@@ -93,7 +109,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1808, 44.0]
+    coordinate: [1688, 12.0]
+    rotation: 0
+    state: true
+- name: blocks_file_sink_0_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: base_name+"_2.raw"
+    type: float
+    unbuffered: 'False'
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1688, 252.0]
     rotation: 0
     state: true
 - name: blocks_head_0
@@ -111,7 +145,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 68.0]
+    coordinate: [352, 68.0]
     rotation: 0
     state: true
 - name: blocks_keep_one_in_n_0
@@ -129,7 +163,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 60.0]
+    coordinate: [1416, 60.0]
+    rotation: 0
+    state: true
+- name: blocks_keep_one_in_n_0_0
+  id: blocks_keep_one_in_n
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: decimation_factor
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1416, 244.0]
     rotation: 0
     state: true
 - name: blocks_stream_to_vector_0
@@ -147,7 +199,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 72.0]
+    coordinate: [552, 72.0]
+    rotation: 0
+    state: true
+- name: blocks_stream_to_vector_0_0
+  id: blocks_stream_to_vector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_items: fft_size
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 256.0]
     rotation: 0
     state: true
 - name: decimation_factor
@@ -219,7 +289,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 36.0]
+    coordinate: [736, 36.0]
+    rotation: 0
+    state: true
+- name: fft_vxx_0_0
+  id: fft_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fft_size: fft_size
+    forward: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    shift: 'True'
+    type: complex
+    window: window.blackmanharris(fft_size)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 220.0]
     rotation: 0
     state: true
 - name: frequency
@@ -369,7 +460,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 60.0]
+    coordinate: [1200, 60.0]
+    rotation: 0
+    state: true
+- name: single_pole_iir_filter_xx_0_0
+  id: single_pole_iir_filter_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: alpha_IIR
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1208, 244.0]
     rotation: 0
     state: true
 - name: subdev
@@ -760,7 +869,7 @@ blocks:
     lo_source9: internal
     maxoutbuf: '0'
     minoutbuf: '0'
-    nchan: '1'
+    nchan: '2'
     num_mboards: '1'
     otw: ''
     rx_agc0: Default
@@ -844,19 +953,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1800, 156.0]
+    coordinate: [1688, 116.0]
     rotation: 0
     state: true
 
 connections:
 - [blocks_complex_to_mag_squared_0, '0', single_pole_iir_filter_xx_0, '0']
+- [blocks_complex_to_mag_squared_0_0, '0', single_pole_iir_filter_xx_0_0, '0']
 - [blocks_head_0, '0', blocks_stream_to_vector_0, '0']
 - [blocks_keep_one_in_n_0, '0', blocks_file_sink_0, '0']
 - [blocks_keep_one_in_n_0, '0', zeromq_pub_sink_0, '0']
+- [blocks_keep_one_in_n_0_0, '0', blocks_file_sink_0_0, '0']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
+- [blocks_stream_to_vector_0_0, '0', fft_vxx_0_0, '0']
 - [fft_vxx_0, '0', blocks_complex_to_mag_squared_0, '0']
+- [fft_vxx_0_0, '0', blocks_complex_to_mag_squared_0_0, '0']
 - [single_pole_iir_filter_xx_0, '0', blocks_keep_one_in_n_0, '0']
+- [single_pole_iir_filter_xx_0_0, '0', blocks_keep_one_in_n_0_0, '0']
 - [uhd_usrp_source_0, '0', blocks_head_0, '0']
+- [uhd_usrp_source_0, '1', blocks_stream_to_vector_0_0, '0']
 
 metadata:
   file_format: 1
