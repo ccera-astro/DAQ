@@ -282,7 +282,8 @@ elif run_mode == "h1" :         # special request from Marcus
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 8192
     decimation_factor = 800
-    samp_rate = f_clock/100. 
+    #samp_rate = f_clock/100. 
+    samp_rate = f_clock/100.    # change for M8 running  
 elif run_mode == "generic" :
     f1, f2 = 1.4204e9, 1.4204e9
     fft_size = 2048
