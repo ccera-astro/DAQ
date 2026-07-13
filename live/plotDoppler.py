@@ -106,6 +106,9 @@ class plotDoppler() :
             vDoppler, bkgr_sub_pow = self.anaSpectrum(self.sumPower)
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
+            yMax = 1.1*np.max(self.sumPower)
+            self.ax.set_ylim([-10.,yMax])
+            
 
         if args.sun_mode :
             yMax = 1.1*np.max(power)
