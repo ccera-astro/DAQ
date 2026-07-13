@@ -90,15 +90,13 @@ class plotDoppler() :
         self.ax.grid()
         self.fig.canvas.draw()
         plot.show(block=False)
-        #print("Sleep 5 seconds.")
-        #time.sleep(5.)
         print("Leaving init_plot()")
         
 
     def plotNewSpectrum(self,args,alpha) :  
         alph = max(1./(self.draw_count + 1.),alpha)   
         nRead, power = self.getData()
-        print("In plotNewSpectrum() nRead={0:d} alpha={1:f} alph={2:f}".format(nRead,alpha,alph))
+        print("In plotNewSpectrum() nRead={0:d} alpha={1:f} alph={2:f} draw_count={3:d}".format(nRead,alpha,alph,self.draw_count))
         if nRead > 0 :
             #print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
             #    np.sum(power),np.sum(self.sumPower)))
