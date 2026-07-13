@@ -32,6 +32,7 @@ def getAzAlt() :
     
 def getAlpha(args,lastUVW) :
     #if args.alpha < 1. : return args.alpha, lastUVW
+    if not "receiver" in socket.gethostname().lower() : return 0.1, lastUVW 
     az, alt, az_rate, alt_rate = getAzAlt()
     tht = radians(90. - alt) 
     cs, sn = cos(tht), sin(tht)
@@ -73,7 +74,7 @@ UVW = [0., 0., -1.]
 with open(base_name + ".json") as json_file : metadata = json.load(json_file)
 
 # determine the run mode and start the plotting process 
-if metadata["run_mode"].lower() == "doppler" :
+if metadata["run_mode"].lower() in ["doppler","h1"] :
     print("Starting plotDoppler: base_name={0:s}".format(base_name))
     file_name = base_name + "_1.raw"
     pd = plotDoppler.plotDoppler(file_name,metadata)
@@ -86,7 +87,7 @@ while True :
     alpha, UVW = getAlpha(args,UVW)
     print("In plotLive: alpha={0:f}".format(alpha))
     pd.plotNewSpectrum(args,alpha)      
-    time.sleep(10.0)
+    time.sleep(2.0)
     
 
 

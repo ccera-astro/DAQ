@@ -77,19 +77,23 @@ class plotDoppler() :
         self.fig.suptitle('Live Doppler Display',fontsize=14) 
         self.ax.set_xlim([-200.,200.])
         nRecords, power = self.getData()
-        self.sumPower = np.zeros_like(power) 
+        #self.sumPower = np.zeros_like(power) 
+        self.sumPower = power 
         vDoppler, bkgr_sub_pow = self.anaSpectrum(power)
         self.li, = self.ax.plot(vDoppler, bkgr_sub_pow, 'b.')
         self.draw_count += 1 
         self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
-        if not args.sun_mode : self.ax.set_ylim([-5.,50.])
+        #if not args.sun_mode : self.ax.set_ylim([-5.,50.])
         self.ax.set_title("PSD vs Approach Velocity")
         self.ax.set_xlabel("v (km/s)")
         self.ax.set_ylabel("PSD (K)")
         self.ax.grid()
         self.fig.canvas.draw()
         plot.show(block=False)
+        #print("Sleep 5 seconds.")
+        #time.sleep(5.)
         print("Leaving init_plot()")
+        
 
     def plotNewSpectrum(self,args,alpha) :  
         alph = max(1./(self.draw_count + 1.),alpha)   
