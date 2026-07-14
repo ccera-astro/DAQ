@@ -28,7 +28,7 @@ class plotScan() :
         f = open(self.file_name,"rb")
         while nRead < self.max_read :
             data = np.fromfile(f,count=self.FFTsize,offset=self.offset,dtype=np.float32)
-            print("    In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
+            print("    In getData() offset={0:d} len(data)={1:d} nRead={2:d}".format(self.offset,len(data),nRead))
             if len(data) >= self.FFTsize : 
                 power.append(np.sum(data)) 
                 nRead += 1 
@@ -57,7 +57,7 @@ class plotScan() :
         self.fig.suptitle('Live Scan Display',fontsize=14) 
         nRecords, short_series = self.getData()
         self.tMax = nRecords*self.tStep
-        self.times = np.linspace(0.,self.tMax,nRecords)
+        self.times = np.linspace(self.tStep,self.tMax,nRecords)
         self.powers = short_series  
         self.li, = self.ax.plot(self.times,self.powers, 'b.')
         self.ax.set_xlim(self.getTimeLimits(self.times)) 
