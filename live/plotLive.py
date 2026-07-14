@@ -1,7 +1,7 @@
 import json 
 import glob
 import argparse
-import plotDoppler
+
 from math import sin, cos, acos, radians, degrees
 import time 
 import socket 
@@ -75,20 +75,31 @@ with open(base_name + ".json") as json_file : metadata = json.load(json_file)
 
 # determine the run mode and start the plotting process 
 if metadata["run_mode"].lower() in ["doppler","h1"] :
+    import plotDoppler
     print("Starting plotDoppler: base_name={0:s}".format(base_name))
     file_name = base_name + "_1.raw"
     pd = plotDoppler.plotDoppler(file_name,metadata)
     pd.initPlot(args)
+    while True :
+        alpha, UVW = getAlpha(args,UVW)
+        print("In plotLive: alpha={0:f}".format(alpha))
+        pd.plotNewSpectrum(args,alpha)      
+        time.sleep(2.0)
+    
+elif metadata["run_mode"].lower() == "scan" :
+    import plotScan 
+    print("Starting plotScan: base_name={0:s}".format(base_name))
+    file_name = base_name + "_1.raw"
+    ps = plotScan.plotScan(file_name,metadata)
+    ps.initPlot(args)
+    while True :
+        ps.plotNewSeries(args)
+        time.sleep(1.0)
 else :
     print("run_mode={0:s} not implented . . . exiting.")
     exit() 
 
-while True :
-    alpha, UVW = getAlpha(args,UVW)
-    print("In plotLive: alpha={0:f}".format(alpha))
-    pd.plotNewSpectrum(args,alpha)      
-    time.sleep(2.0)
-    
+
 
 
 
