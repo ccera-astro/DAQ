@@ -27,7 +27,8 @@ class plotScan() :
         power = [] 
         f = open(self.file_name,"rb")
         while nRead < self.max_read :
-            data = np.fromfile(f,count=self.FFTsize,offset=self.offset,dtype=np.float32)
+            f.seek(self.offset)
+            data = np.fromfile(f,count=self.FFTsize,dtype=np.float32)
             print("    In getData() offset={0:d} len(data)={1:d} nRead={2:d}".format(self.offset,len(data),nRead))
             if len(data) >= self.FFTsize : 
                 power.append(np.sum(data)) 
