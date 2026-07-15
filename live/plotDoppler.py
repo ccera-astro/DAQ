@@ -33,9 +33,10 @@ class plotDoppler() :
         nRead = 0 
         power = np.zeros(self.FFTsize)
         f = open(self.file_name,"rb")
+        f.seek(self.offset)
         while True :
-            data = np.fromfile(f,count=self.FFTsize,offset=self.offset,dtype=np.float32)
-            #print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
+            data = np.fromfile(f,count=self.FFTsize,dtype=np.float32)
+            print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
             if len(data) >= self.FFTsize : 
                 power += data 
                 nRead += 1 
@@ -44,8 +45,8 @@ class plotDoppler() :
                 if nRead > 0 : power /= nRead
                 break  
         self.read_count += 1       
-        #print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
-        #    nRead,self.offset,self.read_count))
+        print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
+            nRead,self.offset,self.read_count))
         return nRead, power
     
     def fitBackground(self,vDoppler,power,n,vSignal) :
