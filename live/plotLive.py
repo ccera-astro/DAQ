@@ -83,7 +83,7 @@ if metadata["run_mode"].lower() in ["doppler","h1"] :
     while True :
         alpha, UVW = getAlpha(args,UVW)
         pd.plotNewSpectrum(args,alpha)      
-        time.sleep(2.0)
+        time.sleep(1.0)
     
 elif metadata["run_mode"].lower() == "scan" :
     import plotScan 
