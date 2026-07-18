@@ -82,9 +82,8 @@ if metadata["run_mode"].lower() in ["doppler","h1"] :
     pd.initPlot(args)
     while True :
         alpha, UVW = getAlpha(args,UVW)
-        print("In plotLive: alpha={0:f}".format(alpha))
         pd.plotNewSpectrum(args,alpha)      
-        time.sleep(1.0)
+        time.sleep(2.0)
     
 elif metadata["run_mode"].lower() == "scan" :
     import plotScan 
@@ -95,6 +94,18 @@ elif metadata["run_mode"].lower() == "scan" :
     while True :
         ps.plotNewSeries(args)
         time.sleep(1.0)
+
+elif metadata["run_mode"].lower() == "pulsar" :
+    import plotPulsar 
+    print("Starting plotPulsar: base_name={0:s}".format(base_name))
+    file_name = base_name + "_1.raw"
+    pp = plotPulsar.plotPulsar(file_name,metadata)
+    pp.initAna(base_name,metadata)
+    pp.initPlot(args)
+    while True :
+        pp.updatePlot(args)
+        time.sleep(1.0)
+
 else :
     print("run_mode={0:s} not implented . . . exiting.")
     exit() 
