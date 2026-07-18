@@ -35,7 +35,7 @@ class plotDoppler() :
         f = open(self.file_name,"rb")
         f.seek(self.offset)
         data = np.fromfile(f,count=self.FFTsize,dtype=np.float32)
-        print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
+        #print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
         if len(data) >= self.FFTsize : 
             power += data 
             nRead += 1 
@@ -98,8 +98,8 @@ class plotDoppler() :
             #print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
             #    np.sum(power),np.sum(self.sumPower)))
             self.sumPower = alph*power + (1. - alph)*self.sumPower 
-            print("In plotNewSpectrum()  sum(power)={0:e} sum(sumPower)={1:e}".format(
-                np.sum(power),np.sum(self.sumPower)))
+            #print("In plotNewSpectrum()  sum(power)={0:e} sum(sumPower)={1:e}".format(
+            #    np.sum(power),np.sum(self.sumPower)))
             vDoppler, bkgr_sub_pow = self.anaSpectrum(self.sumPower)
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
