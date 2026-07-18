@@ -79,9 +79,9 @@ class plotDoppler() :
         vDoppler, bkgr_sub_pow = self.anaSpectrum(power)
         self.li, = self.ax.plot(vDoppler, bkgr_sub_pow, 'b.')
         self.draw_count += 1 
-        self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
+        #self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
         #if not args.sun_mode : self.ax.set_ylim([-5.,50.])
-        self.ax.set_title("PSD vs Approach Velocity")
+        self.ax.set_title("PSD vs Approach Velocity: Draw count={0:d}".format(self.draw_count))
         self.ax.set_xlabel("v (km/s)")
         self.ax.set_ylabel("PSD (K)")
         self.ax.grid()
@@ -110,7 +110,8 @@ class plotDoppler() :
             yMax = 1.1*np.max(power)
             self.ax.set_ylim([0.,yMax])
             
-        self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
+        #self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
+        self.ax.set_title("PSD vs Approach Velocity: Draw count={0:d}".format(self.draw_count))
         self.fig.canvas.draw()
         self.draw_count += 1 
         plot.pause(0.1)
