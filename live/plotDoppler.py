@@ -95,23 +95,19 @@ class plotDoppler() :
         nRead, power = self.getData()
         print("In plotNewSpectrum() nRead={0:d} alpha={1:f} alph={2:f} draw_count={3:d}".format(nRead,alpha,alph,self.draw_count))
         if nRead > 0 :
-            #print("In plotNewSpectrum() before    : sum(power)={0:e} sum(sumPower)={1:e}".format(
-            #    np.sum(power),np.sum(self.sumPower)))
             self.sumPower = alph*power + (1. - alph)*self.sumPower 
-            #print("In plotNewSpectrum()  sum(power)={0:e} sum(sumPower)={1:e}".format(
-            #    np.sum(power),np.sum(self.sumPower)))
             vDoppler, bkgr_sub_pow = self.anaSpectrum(self.sumPower)
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
-            yMax = 1.1*np.max(bkgr_sub_pow)
-            self.ax.set_ylim([-5.,yMax])
+            yMax, yMin = np.max(bkgr_sub_pow), np.min(bkgr_sub_pow)
+            dy = yMax - yMin 
+            self.ax.set_ylim([yMin - 0.1*dy,yMax + 0.1*dy])
 
         if args.sun_mode :
             yMax = 1.1*np.max(power)
             self.ax.set_ylim([0.,yMax])
             
-        #self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
-        self.ax.set_title("PSD vs Approach Velocity: Draw count={0:d}".format(self.draw_count))
+        self.ax.set_title("PSD vs Approach Velocity: Draw count={0:d} alpha={1:.4f}".format(self.draw_count,alph))
         self.fig.canvas.draw()
         self.draw_count += 1 
         plot.pause(0.1)
