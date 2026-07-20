@@ -77,8 +77,8 @@ with open(base_name + ".json") as json_file : metadata = json.load(json_file)
 if metadata["run_mode"].lower() in ["doppler","h1"] :
     import plotDoppler
     print("Starting plotDoppler: base_name={0:s}".format(base_name))
-    file_name = base_name + "_1.raw"
-    pd = plotDoppler.plotDoppler(file_name,metadata)
+    #file_name = base_name + "_1.raw"
+    pd = plotDoppler.plotDoppler(base_name,metadata)
     pd.initPlot(args)
     while True :
         alpha, UVW = getAlpha(args,UVW)
@@ -98,13 +98,12 @@ elif metadata["run_mode"].lower() == "scan" :
 elif metadata["run_mode"].lower() == "pulsar" :
     import plotPulsar 
     print("Starting plotPulsar: base_name={0:s}".format(base_name))
-    file_name = base_name + "_1.raw"
-    pp = plotPulsar.plotPulsar(file_name,metadata)
+    pp = plotPulsar.plotPulsar(base_name,metadata)
     pp.initAna(base_name,metadata)
     pp.initPlot(args)
     while True :
         pp.updatePlot(args)
-        time.sleep(1.0)
+        time.sleep(5.0)
 
 else :
     print("run_mode={0:s} not implented . . . exiting.")
