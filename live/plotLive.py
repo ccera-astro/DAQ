@@ -77,13 +77,14 @@ with open(base_name + ".json") as json_file : metadata = json.load(json_file)
 if metadata["run_mode"].lower() in ["doppler","h1"] :
     import plotDoppler
     print("Starting plotDoppler: base_name={0:s}".format(base_name))
-    #file_name = base_name + "_1.raw"
-    pd = plotDoppler.plotDoppler(base_name,metadata)
+    file_name = base_name + "_1.raw"
+    pd = plotDoppler.plotDoppler(file_name,metadata)
     pd.initPlot(args)
     while True :
+        time.sleep(2.0)
         alpha, UVW = getAlpha(args,UVW)
         pd.plotNewSpectrum(args,alpha)      
-        time.sleep(1.0)
+        
     
 elif metadata["run_mode"].lower() == "scan" :
     import plotScan 

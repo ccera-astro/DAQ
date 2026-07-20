@@ -22,7 +22,7 @@ class plotDoppler() :
         c = 3.0e5          # in km/s
         self.velocities = c*(self.freqs/fLine - 1.)
 
-        self.gain = 1.   # get gain correction 
+        self.gain = 0.33   # get gain correction 
         self.file_name = file_name 
         self.count = 0   # number of spectra
         self.offset = 0   # file read offset
@@ -34,7 +34,7 @@ class plotDoppler() :
         power = np.zeros(self.FFTsize)
         f = open(self.file_name,"rb")
         f.seek(self.offset)
-        data = np.fromfile(f,count=self.FFTsize,dtype=np.float32)
+        data = self.gain*np.fromfile(f,count=self.FFTsize,dtype=np.float32)
         #print("In getData() len(data)={0:d} nRead={1:d}".format(len(data),nRead))
         if len(data) >= self.FFTsize : 
             power += data 
@@ -104,7 +104,7 @@ class plotDoppler() :
             self.li.set_xdata(vDoppler)
             self.li.set_ydata(bkgr_sub_pow)
             yMax = 1.1*np.max(bkgr_sub_pow)
-            self.ax.set_ylim([-10.,yMax])
+            self.ax.set_ylim([-5.,yMax])
 
         if args.sun_mode :
             yMax = 1.1*np.max(power)
