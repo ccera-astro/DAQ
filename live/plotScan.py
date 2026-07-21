@@ -38,8 +38,8 @@ class plotScan() :
             else :
                 break  
         self.read_count += 1       
-        print("    Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d} len(power)={3:d}".format(
-            nRead,self.offset,self.read_count,len(power)))
+        #print("    Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d} len(power)={3:d}".format(
+        #    nRead,self.offset,self.read_count,len(power)))
         return nRead, power
     
     def getTimeLimits(self, t) :
