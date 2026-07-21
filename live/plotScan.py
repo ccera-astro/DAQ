@@ -90,8 +90,8 @@ class plotScan() :
         else :
             print("In plotNewSeries() nRecords={0:d} draw_count={1:d}".format(nRecords,self.draw_count))
 
-        self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
-
+        #self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
+        self.ax.set_title("Power vs Time: {0:s} draw_count={1:d}".format(self.base_name,self.draw_count)) 
         self.fig.canvas.draw()
         self.draw_count += 1 
         plot.pause(0.1)
