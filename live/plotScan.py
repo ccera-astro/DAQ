@@ -32,7 +32,7 @@ class plotScan() :
             data = np.fromfile(f,count=self.FFTsize,dtype=np.float32)
             #print("    In getData() offset={0:d} len(data)={1:d} nRead={2:d}".format(self.offset,len(data),nRead))
             if len(data) >= self.FFTsize : 
-                power.append(np.sum(data)) 
+                power.append(self.gain*np.sum(data)) 
                 nRead += 1 
                 self.offset += 4*self.FFTsize 
             else :
