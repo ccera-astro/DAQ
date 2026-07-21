@@ -42,8 +42,8 @@ class plotDoppler() :
             nRead += 1 
             self.offset += 4*self.FFTsize 
         self.read_count += 1       
-        print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
-            nRead,self.offset,self.read_count))
+        #print("Exiting getData(): nRead={0:d} offset={1:d} read_count={2:d}".format(
+        #   nRead,self.offset,self.read_count))
         return nRead, power
     
     def fitBackground(self,vDoppler,power,n,vSignal) :
