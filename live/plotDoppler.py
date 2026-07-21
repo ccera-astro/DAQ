@@ -22,7 +22,7 @@ class plotDoppler() :
         c = 3.0e5          # in km/s
         self.velocities = c*(self.freqs/fLine - 1.)
 
-        self.gain = 0.33   # get gain correction 
+        self.gain = 0.20   # get gain correction 
         self.file_name = file_name 
         self.base_name = file_name.split("/")[-1].split("_")[0]  
         self.count = 0   # number of spectra
