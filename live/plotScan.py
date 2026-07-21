@@ -14,7 +14,7 @@ class plotScan() :
         self.tStep = 1./(fSample/D/self.FFTsize)
         print("In plotScan.__init__: fCenter={0:f} MHz  fSample={1:f} tStep={2:.2f} ms".format(self.fCenter,fSample,1000.*self.tStep))
 
-        self.gain = 0.833   # get gain correction 
+        self.gain = 0.78  # get gain correction 
         self.file_name = file_name 
         self.base_name = file_name.split("/")[-1].split("_")[0] 
         self.max_read = 4 
