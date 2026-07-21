@@ -29,7 +29,7 @@ class plotScan() :
         while nRead < self.max_read :
             f.seek(self.offset)
             data = np.fromfile(f,count=self.FFTsize,dtype=np.float32)
-            print("    In getData() offset={0:d} len(data)={1:d} nRead={2:d}".format(self.offset,len(data),nRead))
+            #print("    In getData() offset={0:d} len(data)={1:d} nRead={2:d}".format(self.offset,len(data),nRead))
             if len(data) >= self.FFTsize : 
                 power.append(np.sum(data)) 
                 nRead += 1 
@@ -74,7 +74,6 @@ class plotScan() :
         print("   Leaving init_plot()")
         
     def plotNewSeries(self,args) :  
-        print("Entering plotNewSeries()")
         nRecords, short_series = self.getData()
         print("In plotNewSeries() nRecords={0:d} draw_count={1:d}".format(nRecords,self.draw_count))
         if nRecords > 0 :
@@ -88,7 +87,6 @@ class plotScan() :
             self.ax.set_xlim(self.getTimeLimits(self.times)) 
             self.ax.set_ylim([0.,yMax])
             print("   In plotNewSeries() len(times)={0:d} yMax={1:f} powers[-1]={2:f}".format(len(self.times),yMax,self.powers[-1]))
-            print("   In plotNewSeries() times[-5:]={0:s}".format(str(self.times[-5:])))
 
         self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
         self.fig.canvas.draw()

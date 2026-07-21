@@ -31,8 +31,7 @@ def getAzAlt() :
         return 0., 90., 0., 0. 
     
 def getAlpha(args,lastUVW) :
-    #if args.alpha < 1. : return args.alpha, lastUVW
-    if not "receiver" in socket.gethostname().lower() : return 0.1, lastUVW 
+    if not "receiver" in socket.gethostname().lower() : return 0.01, lastUVW 
     az, alt, az_rate, alt_rate = getAzAlt()
     tht = radians(90. - alt) 
     cs, sn = cos(tht), sin(tht)
@@ -94,7 +93,7 @@ elif metadata["run_mode"].lower() == "scan" :
     ps.initPlot(args)
     while True :
         ps.plotNewSeries(args)
-        time.sleep(1.0)
+        time.sleep(5.0)
 
 elif metadata["run_mode"].lower() == "pulsar" :
     import plotPulsar 
