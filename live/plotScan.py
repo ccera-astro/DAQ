@@ -16,6 +16,7 @@ class plotScan() :
 
         self.gain = 1.   # get gain correction 
         self.file_name = file_name 
+        self.base_name = file_name.split("/")[-1].split("_")[0] 
         self.max_read = 4 
         self.count = 0   # number of spectra
         self.offset = 0   # file read offset
@@ -63,8 +64,8 @@ class plotScan() :
         self.li, = self.ax.plot(self.times,self.powers, 'b.')
         self.ax.set_xlim(self.getTimeLimits(self.times)) 
         self.draw_count += 1 
-        self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
-        self.ax.set_title("Power vs Time")
+        #self.txt1 = self.ax.text(-180.,40.,"Draw count={0:d}".format(self.draw_count),fontsize=14)
+        self.ax.set_title("Power vs Time: {0:s} draw_count={1:d}".format(self.base_name,self.draw_count))
         self.ax.set_xlabel("t (s)")
         self.ax.set_ylabel("PSD (K)")
         self.ax.grid()
@@ -75,7 +76,6 @@ class plotScan() :
         
     def plotNewSeries(self,args) :  
         nRecords, short_series = self.getData()
-        print("In plotNewSeries() nRecords={0:d} draw_count={1:d}".format(nRecords,self.draw_count))
         if nRecords > 0 :
             tMin = self.tMax + self.tStep 
             self.tMax += nRecords*self.tStep 
@@ -86,9 +86,12 @@ class plotScan() :
             yMax = 1.1*np.max(self.powers)
             self.ax.set_xlim(self.getTimeLimits(self.times)) 
             self.ax.set_ylim([0.,yMax])
-            print("   In plotNewSeries() len(times)={0:d} yMax={1:f} powers[-1]={2:f}".format(len(self.times),yMax,self.powers[-1]))
+            print("In plotNewSeries(): nRecords={0:d} len(times)={1:d} times[-1]={2:.3f}".format(nRecords,len(self.times),self.times[-1]))
+        else :
+            print("In plotNewSeries() nRecords={0:d} draw_count={1:d}".format(nRecords,self.draw_count))
 
         self.txt1.set_text("Draw count={0:d}".format(self.draw_count))
+
         self.fig.canvas.draw()
         self.draw_count += 1 
         plot.pause(0.1)
