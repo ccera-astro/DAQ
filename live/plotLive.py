@@ -31,6 +31,7 @@ def getAzAlt() :
         return 0., 90., 0., 0. 
     
 def getAlpha(args,lastUVW) :
+    if True : return 0.01
     if not "receiver" in socket.gethostname().lower() : return 0.01, lastUVW 
     az, alt, az_rate, alt_rate = getAzAlt()
     tht = radians(90. - alt) 
