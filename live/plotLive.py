@@ -81,7 +81,7 @@ if metadata["run_mode"].lower() in ["doppler","h1"] :
     pd = plotDoppler.plotDoppler(file_name,metadata)
     pd.initPlot(args)
     while True :
-        time.sleep(0.5)
+        time.sleep(2.0)
         alpha, UVW = getAlpha(args,UVW)
         pd.plotNewSpectrum(args,alpha)      
         
