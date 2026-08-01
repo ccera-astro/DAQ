@@ -178,10 +178,19 @@ class plotPulsar() :
         nRecords, short_times, short_series = self.getData()
         phase_hist = self.anaPulsar(short_times,short_series)
         phase_bins = np.linspace(0.,1.,self.nPhaseBins)
+
+        
         #self.li, = self.ax.plot(phase_bins,phase_hist, 'bo')
         yMin, yMax = np.min(phase_hist), np.max(phase_hist)
         sigma_array = self.getSigmaArray(phase_hist)
         best_sigma = max(sigma_array)
+
+        roll = 0 
+        if best_sigma > 4. :
+            roll = int(self.nPhaseBins/2) - np.argmax(best_sigma_array) 
+            best_sigma_array = np.roll(best_sigma_array,roll)
+            phase_hist = np.roll(phase_hist,roll)
+
         yMin, yMax = -4., max(4.,np.max(sigma_array)) 
         dy = yMax - yMin
         self.ax.set_ylim(yMin-0.1*dy,yMax+0.1*dy) 
