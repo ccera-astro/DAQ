@@ -22,6 +22,7 @@ class plotScan() :
         self.offset = 0   # file read offset
         self.draw_count = 0 
         self.read_count = 0 
+        self.read_step = self.max_read*self.tStep
 
     def getData(self) :
         nRead = 0 
