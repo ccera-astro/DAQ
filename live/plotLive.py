@@ -92,6 +92,7 @@ elif metadata["run_mode"].lower() == "scan" :
     file_name = base_name + "_1.raw"
     ps = plotScan.plotScan(file_name,metadata)
     ps.initPlot(args)
+    sleep_time = ps.read_step / 10. 
     while True :
         ps.plotNewSeries(args)
         time.sleep(1.0)
