@@ -189,7 +189,7 @@ class plotPulsar() :
         if best_sigma > 4. :
             roll = int(self.nPhaseBins/2) - np.argmax(sigma_array) 
             sigma_array = np.roll(sigma_array,roll)
-            phase_bins = np.roll(phase_bins,roll)
+            #phase_bins = np.roll(phase_bins,roll)
 
         yMin, yMax = -4., max(4.,np.max(sigma_array)) 
         dy = yMax - yMin
