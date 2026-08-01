@@ -4,12 +4,11 @@ import matplotlib.pyplot as plot
 import time
 import scipy.stats as stats 
 
+
+
 class plotPulsar() :
 
     def __init__(self, base_name, metadata):
-        
-        # We play a trick here.   The added factor of 4 means that we are 
-        # effectively averaging four data points    
         
         self.FFTsize = metadata['fft_size']
         self.count = 32*50000
@@ -69,6 +68,21 @@ class plotPulsar() :
             #print("    Exiting getData3() times[:4]={0:s} times[-4:]={1:s}".format(str(times[:4]),str(times[-4:])))
             return nRead, times, power
 
+    # use lower tail to estimate mean and sigma and the remove samples
+    # that are more than 5 sigma above the mean 
+    def denoise(self,array) :
+        p16 = np.percentile(array, 16)
+        p50 = np.percentile(array, 50)
+        sigma = p50 - p16
+        threshold = p50 + 10.*sigma 
+        indices = np.where(array > threshold)[0]
+        filtered_array = np.delete(array, indices)
+        if True : 
+            la, lf = len(array), len(filtered_array)
+            print("In    denoise(): p16={0:f} p50={1:f} sigma={2:f} fraction removed={3:.4f}%".format(
+                p16,p50,sigma,100.*(la-lf)/float(la)))
+        return filtered_array, indices 
+    
     def initAna(self,base_name,metadata) :
         self.MJD0 = ((metadata['t_start'])/ 86400.) + 40587.
         self.coeff = rp.getpolycoeff(self.MJD0, metadata, base_name)
@@ -107,6 +121,8 @@ class plotPulsar() :
         MJDs = self.MJD0 + times/86400. 
         phase = self.time2phase(MJDs, self.coeff)
         print("In anaPulsar(): len(phase)={0:d} len(power)={1:d}".format(len(phase),len(power)))
+        power, bad_elements = self.denoise(power)
+        times = np.delete(times,bad_elements)
         #print("In anaPulsar(): \nphase[0:5]={0:s} \npower[0:5]={1:s}".format(str(phase[:5]),str(power[:5]))) 
         bdata, bnum = self.bindata(phase, power, self.nPhaseBins)
         self.bdata_accum += bdata
