@@ -123,6 +123,7 @@ class plotPulsar() :
         print("In anaPulsar(): len(phase)={0:d} len(power)={1:d}".format(len(phase),len(power)))
         power, bad_elements = self.denoise(power)
         times = np.delete(times,bad_elements)
+        print("In anaPulsar(): len(times)={0:d} len(power)={1:d}".format(len(times),len(power))) 
         #print("In anaPulsar(): \nphase[0:5]={0:s} \npower[0:5]={1:s}".format(str(phase[:5]),str(power[:5]))) 
         bdata, bnum = self.bindata(phase, power, self.nPhaseBins)
         self.bdata_accum += bdata
