@@ -80,12 +80,12 @@ if metadata["run_mode"].lower() in ["doppler","h1"] :
     file_name = base_name + "_1.raw"
     pd = plotDoppler.plotDoppler(file_name,metadata)
     pd.initPlot(args)
+    sleep_time = pd.tStep / 10. 
     while True :
         time.sleep(2.0)
         alpha, UVW = getAlpha(args,UVW)
         pd.plotNewSpectrum(args,alpha)      
         
-    
 elif metadata["run_mode"].lower() == "scan" :
     import plotScan 
     print("Starting plotScan: base_name={0:s}".format(base_name))

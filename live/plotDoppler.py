@@ -29,6 +29,9 @@ class plotDoppler() :
         self.offset = 0   # file read offset
         self.draw_count = 0 
         self.read_count = 0 
+        fSample = metadata["srate"]
+        D = metadata['decimation_factor']
+        self.tStep = 1./(fSample/D/self.FFTsize)
 
     def getData(self) :
         nRead = 0 
