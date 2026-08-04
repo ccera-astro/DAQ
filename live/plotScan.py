@@ -85,8 +85,9 @@ class plotScan() :
             self.li.set_xdata(self.times)
             self.li.set_ydata(self.powers)
             yMax = 1.1*np.max(self.powers)
+            yMin = 80. 
             self.ax.set_xlim(self.getTimeLimits(self.times)) 
-            self.ax.set_ylim([0.,yMax])
+            self.ax.set_ylim([yMin,yMax])
             print("In plotNewSeries(): nRecords={0:d} len(times)={1:d} times[-1]={2:.3f}".format(nRecords,len(self.times),self.times[-1]))
         else :
             print("In plotNewSeries() nRecords={0:d} draw_count={1:d}".format(nRecords,self.draw_count))
