@@ -95,7 +95,7 @@ elif metadata["run_mode"].lower() == "scan" :
     sleep_time = ps.read_step / 10. 
     while True :
         ps.plotNewSeries(args)
-        time.sleep(1.0)
+        time.sleep(5.0)
 
 elif metadata["run_mode"].lower() == "pulsar" :
     import plotPulsar 
